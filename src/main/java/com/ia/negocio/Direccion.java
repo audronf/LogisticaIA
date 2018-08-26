@@ -1,5 +1,10 @@
 package com.ia.negocio;
 
+import com.ia.dao.DireccionDAO;
+import com.ia.dto.DireccionDTO;
+import com.ia.entities.DireccionEntity;
+import com.ia.entities.LocalidadEntity;
+
 public class Direccion {
 	private String longitud;
 	private String latitud;
@@ -28,6 +33,20 @@ public class Direccion {
 		this.codigoPostal = codigoPostal;
 	}
 
+	public Direccion(DireccionEntity de) {
+		super();
+		this.longitud = de.getLongitud();
+		this.latitud = de.getLatitud();
+		this.provincia = de.getProvincia();
+		this.localidad = new Localidad(de.getLocalidad());
+		this.calle = de.getCalle();
+		this.numero = de.getNumero();
+		this.piso = de.getPiso();
+		this.unidad = de.getUnidad();
+		this.entreCalles = de.getEntreCalles();
+		this.codigoPostal = de.getCodigoPostal();
+	}
+	
 	public String getLongitud() {
 		return longitud;
 	}
@@ -116,5 +135,16 @@ public class Direccion {
 		this.geolocalizado = geolocalizado;
 	}
 	
+	public DireccionDTO toDTO() {
+		return new DireccionDTO(longitud, latitud, provincia, localidad.toDTO(), calle, numero, piso, unidad, entreCalles, codigoPostal, geolocalizado);
+	}
 	
+	public DireccionEntity toEntity() {
+		return new DireccionEntity(longitud, latitud, provincia, new LocalidadEntity(localidad.getId(), localidad.getDescripcion()), calle, numero, piso, unidad, entreCalles, codigoPostal, geolocalizado);
+	}
+
+	public void save() {
+		DireccionDAO.getInstance().saveOrUpdate(this);
+		
+	}
 }

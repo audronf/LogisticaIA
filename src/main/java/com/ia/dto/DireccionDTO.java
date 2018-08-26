@@ -1,16 +1,11 @@
-package com.ia.entities;
+package com.ia.dto;
 
-//@Entity
-//@Table(name="Direcciones")
-public class DireccionEntity {
-	//@Id
-	//@GeneratedValue(strategy = GenerationType.IDENTIITY)
-	private Integer idDireccion;
+public class DireccionDTO {
+
 	private String longitud;
 	private String latitud;
 	private String provincia;
-	//@OneToOne
-	private LocalidadEntity localidad;
+	private LocalidadDTO localidad;
 	private String calle;
 	private int numero;
 	private int piso;
@@ -18,10 +13,8 @@ public class DireccionEntity {
 	private String entreCalles;
 	private String codigoPostal;
 	private boolean geolocalizado;
-	
-	public DireccionEntity(){}
-	
-	public DireccionEntity(String longitud, String latitud, String provincia, LocalidadEntity localidad, String calle,
+
+	public DireccionDTO(String longitud, String latitud, String provincia, LocalidadDTO localidad, String calle,
 			int numero, int piso, String unidad, String entreCalles, String codigoPostal, boolean geolocalizado) {
 		super();
 		this.longitud = longitud;
@@ -61,11 +54,11 @@ public class DireccionEntity {
 		this.provincia = provincia;
 	}
 
-	public LocalidadEntity getLocalidad() {
+	public LocalidadDTO getLocalidad() {
 		return localidad;
 	}
 
-	public void setLocalidad(LocalidadEntity localidad) {
+	public void setLocalidad(LocalidadDTO localidad) {
 		this.localidad = localidad;
 	}
 
@@ -125,14 +118,4 @@ public class DireccionEntity {
 		this.geolocalizado = geolocalizado;
 	}
 
-	public Integer getIdDireccion() {
-		return idDireccion;
-	}
-
-	public void setIdDireccion(Integer idDireccion) {
-		this.idDireccion = idDireccion;
-	}
-	
-	
-	
 }

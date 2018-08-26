@@ -1,6 +1,12 @@
 package com.ia.negocio;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.ia.dto.DistribuidorDTO;
+import com.ia.dto.LocalidadDTO;
+import com.ia.entities.DistribuidorEntity;
+import com.ia.entities.LocalidadEntity;
 
 public class Distribuidor {
 
@@ -16,6 +22,18 @@ public class Distribuidor {
 		this.nombre = nombre;
 		this.username = username;
 		this.password = password;
+		this.localidades = new ArrayList<Localidad>();
+	}
+	
+	public Distribuidor(DistribuidorEntity de) {
+		super();
+		this.dni = de.getDni();
+		this.nombre = de.getNombre();
+		this.username = de.getUsername();
+		this.password = de.getPassword();
+		this.localidades = new ArrayList<Localidad>();
+		for (LocalidadEntity loc : de.getLocalidades())
+			localidades.add(new Localidad(loc));
 	}
 
 	public String getDni() {
@@ -58,5 +76,22 @@ public class Distribuidor {
 		this.localidades = localidades;
 	}
 	
+	public DistribuidorDTO toDTO() {
+		List<LocalidadDTO> locDTO = new ArrayList<LocalidadDTO>();
+		for (Localidad loc : localidades)
+			locDTO.add(loc.toDTO());
+		return new DistribuidorDTO(dni, nombre, username, password, locDTO);
+			
+	}
 	
+	public DistribuidorEntity toEntity() {
+		DistribuidorEntity de = new DistribuidorEntity();
+		de.setDni(dni);
+		de.setNombre(nombre);
+		de.setPassword(password);
+		de.setUsername(username);
+		for (Localidad l : localidades) 
+			de.getLocalidades().add(new LocalidadEntity(l.getId(), l.getDescripcion()));
+		return de;
+	}
 }

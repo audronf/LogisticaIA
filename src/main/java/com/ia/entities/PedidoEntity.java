@@ -27,11 +27,10 @@ public class PedidoEntity {
 	public PedidoEntity() {
 	}
 
-	public PedidoEntity(int codPedido, ClienteEntity cliente, DireccionEntity direccion,
+	public PedidoEntity(ClienteEntity cliente, DireccionEntity direccion,
 			DistribuidorEntity distribuidor, boolean fragil, String informacion, LocalDate fechaIngreso,
 			LocalDate fechaSalida, LocalDate fechaEntrega, boolean logistica, String incidencia) {
 		super();
-		this.codPedido = codPedido;
 		this.cliente = cliente;
 		this.direccion = direccion;
 		this.distribuidor = distribuidor;
