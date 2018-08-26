@@ -1,5 +1,8 @@
 package com.ia.negocio;
 
+import com.ia.dto.LocalidadDTO;
+import com.ia.entities.LocalidadEntity;
+
 public class Localidad {
 
 	private int id;
@@ -8,6 +11,12 @@ public class Localidad {
 	public Localidad(String descripcion) {
 		super();
 		this.descripcion = descripcion;
+	}
+	
+	public Localidad(LocalidadEntity le) {
+		super();
+		this.id = le.getId();
+		this.descripcion = le.getDescripcion();
 	}
 
 	public int getId() {
@@ -26,5 +35,8 @@ public class Localidad {
 		this.descripcion = descripcion;
 	}
 	
+	public LocalidadDTO toDTO() {
+		return new LocalidadDTO(id, descripcion);
+	}
 	
 }
