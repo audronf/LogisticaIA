@@ -1,6 +1,7 @@
 package com.ia.negocio;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class HojaDeRuta {
 
@@ -9,6 +10,7 @@ public class HojaDeRuta {
 	private Distribuidor distribuidor;
 	private LocalDate fechaGeneracion;
 	private LocalDate fechaCierre;
+	private List<Pedido> pedidos;
 	
 	public HojaDeRuta(Localidad localidad, Distribuidor distribuidor, LocalDate fechaGeneracion) {
 		super();
@@ -57,7 +59,14 @@ public class HojaDeRuta {
 		this.fechaCierre = fechaCierre;
 	}
 	
-	
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+
 	
 	
 }
