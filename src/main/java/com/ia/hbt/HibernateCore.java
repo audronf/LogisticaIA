@@ -15,6 +15,8 @@ public class HibernateCore {
 			ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(config.getProperties()).build();
 			
 			/** Annotated classes **/
+			// Acá van todas las entities. 
+			// Agreguen una por una, sino va a tirar error
 			
 			sessionFactory = config.buildSessionFactory(serviceRegistry);
 		}
