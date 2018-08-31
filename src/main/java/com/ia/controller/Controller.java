@@ -52,7 +52,7 @@ public class Controller {
 			
 	}
 	
-	public void llenarHdr(List<Pedido> pedidos)
+	public void llenarHojaDeRuta(List<Pedido> pedidos)
 	{
 		Map<Localidad, List<Pedido>> map = new HashMap<Localidad, List<Pedido>>();
 		for (Pedido item : pedidos) {
@@ -71,7 +71,7 @@ public class Controller {
 		}
 	}
 
-	private void asignarHDR(List<Pedido> lista) {
+	private void asignarHojaDeRuta(List<Pedido> lista) {
 		if(lista.size()<maxPedidos) //Si tiene menos de 30 pedidos, listo, se crea la hdr y se le asigna esa lista de pedidos
 		{
 			HojaDeRuta hdr = new HojaDeRuta(lista.get(0).getDireccion().getLocalidad(),null,LocalDate.now());
