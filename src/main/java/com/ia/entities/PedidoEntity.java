@@ -2,19 +2,28 @@ package com.ia.entities;
 
 import java.time.LocalDate;
 
-//@Entity
-//@Table(name="Pedidos")
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="Pedidos")
 public class PedidoEntity {
-	// @Id
-	//@GeneratedValue(strategy = GenerationType.IDENTIITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int codPedido;
-	//@OneToOne
+	@OneToOne
 	private ClienteEntity cliente;
-	//@OneToMany
-	//@JoinColumn(name="idDireccion")
+	@OneToMany
+	@JoinColumn(name="idDireccion")
 	private DireccionEntity direccion;
-	//@OneToMany
-	//@JoinColumn(name="dniDistribuidor")
+	@OneToMany
+	@JoinColumn(name="dniDistribuidor")
 	private DistribuidorEntity distribuidor;
 	private boolean fragil;
 	private String informacion;

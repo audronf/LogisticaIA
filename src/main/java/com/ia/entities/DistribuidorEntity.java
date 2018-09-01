@@ -2,19 +2,24 @@ package com.ia.entities;
 
 import java.util.List;
 
-//@Entity
-//@Table(name="Distribuidores")
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="Distribuidores")
 public class DistribuidorEntity {
 
-	//@Id
+	@Id
 	private String dni;
 	private String nombre;
 	private String username;
 	private String password;
-	//@ManyToMany
-	/*@JoinTable(name = "Distribuidores_Localidades", 
-    joinColumns = { @JoinColumn(name = "idLocalidad")}
-	 */
+	@ManyToMany
+	@JoinTable(name = "Distribuidores_Localidades", joinColumns = {@JoinColumn(name = "idLocalidad")})
 	private List<LocalidadEntity> localidades;
 	
 	public DistribuidorEntity(){}

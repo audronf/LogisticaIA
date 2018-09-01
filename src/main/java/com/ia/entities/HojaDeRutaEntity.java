@@ -2,17 +2,25 @@ package com.ia.entities;
 
 import java.time.LocalDate;
 
-//@Entity
-//@Table(name="HojasDeRuta")
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="HojasDeRuta")
 public class HojaDeRutaEntity {
-	//@Id
-	//@GeneratedValue(strategy = GenerationType.IDENTIITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int codHDR;
-	//@OneToMany
-	//@JoinColumn(name="idLocalidad")
+	@OneToMany
+	@JoinColumn(name="idLocalidad")
 	private LocalidadEntity localidad;
-	//@OneToMany
-	//@JoinColumn(name="dniDistribuidor")
+	@OneToMany
+	@JoinColumn(name="dniDistribuidor")
 	private DistribuidorEntity distribuidor;
 	private LocalDate fechaGeneracion;
 	private LocalDate fechaCierre;

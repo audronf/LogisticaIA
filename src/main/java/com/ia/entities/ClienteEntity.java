@@ -1,10 +1,14 @@
 package com.ia.entities;
 
-//@Entity
-//@Table(name="Clientes")
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="Clientes")
 public class ClienteEntity {
 
-	//@Id
+	@Id
 	private String identificador;
 	private String nombre;
 	private String email;

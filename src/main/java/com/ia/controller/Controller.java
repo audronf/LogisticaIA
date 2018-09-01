@@ -62,12 +62,12 @@ public class Controller {
 		    map.put(item.getDireccion().getLocalidad(), list);
 		  }
 		  list.add(item);
-		} /*Todo lo de arriba lo que hace es tomar la lista de pedidos y separarlos por el código de 
+		} /*Todo lo de arriba lo que hace es tomar la lista de pedidos y separarlos por el cï¿½digo de 
 		    localidad. Crea una lista de listas donde cada lista es una lista de los pedidos de una sola
 		    localidad, esta lista se obtiene haciendo map.valules()*/
 		for(List<Pedido> lista : map.values())
 		{
-			asignarHDR(lista); //cada lista de pedidos de diferente localidad se va a meter en este método.
+			asignarHojaDeRuta(lista); //cada lista de pedidos de diferente localidad se va a meter en este mï¿½todo.
 		}
 	}
 
@@ -81,10 +81,10 @@ public class Controller {
 		else
 		{
 			List<Pedido> primera = lista.subList(0, lista.size()/2);
-			asignarHDR(primera);
+			asignarHojaDeRuta(primera);
 			List<Pedido> segunda = lista.subList(lista.size()/2, lista.size());
-			asignarHDR(segunda);
-			// Recursión. Divide la lista de pedidos a la mitad y prueba hacer lo mismo con cada mitad.
+			asignarHojaDeRuta(segunda);
+			// Recursiï¿½n. Divide la lista de pedidos a la mitad y prueba hacer lo mismo con cada mitad.
 		}
 	
 	}
