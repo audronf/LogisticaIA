@@ -1,9 +1,11 @@
 package com.ia.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -16,7 +18,8 @@ public class DireccionEntity {
 	private String longitud;
 	private String latitud;
 	private String provincia;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name="idLocalidad")
 	private LocalidadEntity localidad;
 	private String calle;
 	private int numero;

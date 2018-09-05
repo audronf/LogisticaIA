@@ -1,9 +1,11 @@
 package com.ia.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -12,23 +14,29 @@ public class LocalidadEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	@Column(name="id")
+	private Integer idLocalidad;
 	private String descripcion;
 	
 	public LocalidadEntity(){}
 
 	public LocalidadEntity(int id, String descripcion) {
 		super();
-		this.id = id;
+		this.idLocalidad = id;
+		this.descripcion = descripcion;
+	}
+	
+	public LocalidadEntity(String descripcion) {
+		super();
 		this.descripcion = descripcion;
 	}
 
 	public int getId() {
-		return id;
+		return idLocalidad;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.idLocalidad = id;
 	}
 
 	public String getDescripcion() {

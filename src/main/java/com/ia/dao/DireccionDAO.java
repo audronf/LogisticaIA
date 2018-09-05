@@ -3,6 +3,7 @@ package com.ia.dao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import com.ia.entities.DireccionEntity;
+import com.ia.entities.LocalidadEntity;
 import com.ia.hbt.HibernateCore;
 import com.ia.negocio.Direccion;
 
@@ -34,10 +35,44 @@ public class DireccionDAO {
 		else
 			return null;
 	}
+	
+	public boolean existeLaLocalidad(String descripcion) {
+		LocalidadEntity le = null;
+		SessionFactory sf = HibernateCore.getSessionFactory();
+		Session session = sf.openSession();
+		le = (LocalidadEntity) session.createQuery("from LocalidadEntity where descripcion = ?1")
+				.setParameter(1, descripcion)
+				.uniqueResult();
+		session.close();
+		
+		return (le!=null);
+	}
+	
+	public LocalidadEntity getLocalidad(String descripcion) {
+		LocalidadEntity le = null;
+		SessionFactory sf = HibernateCore.getSessionFactory();
+		Session session = sf.openSession();
+		le = (LocalidadEntity) session.createQuery("from LocalidadEntity where descripcion = ?1")
+				.setParameter(1, descripcion)
+				.uniqueResult();
+		session.close();
+		return le;
+	}
 
 	public void saveOrUpdate(Direccion d) {
 		DireccionEntity de = d.toEntity();
 		SessionFactory sf = HibernateCore.getSessionFactory();
+		Session session2 = sf.openSession();
+		// Guardo la localidad primero
+		if (!existeLaLocalidad(de.getLocalidad().getDescripcion())) {
+			session2.beginTransaction();
+			session2.saveOrUpdate(de.getLocalidad()); 
+			session2.getTransaction().commit();
+			session2.close();
+		}
+		else {
+			de.setLocalidad(getLocalidad(de.getLocalidad().getDescripcion()));
+		}
 		Session session = sf.openSession();
 		session.beginTransaction();
 		session.saveOrUpdate(de);

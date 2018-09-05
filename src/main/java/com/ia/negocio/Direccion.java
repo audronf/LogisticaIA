@@ -38,7 +38,7 @@ public class Direccion {
 		this.longitud = de.getLongitud();
 		this.latitud = de.getLatitud();
 		this.provincia = de.getProvincia();
-		this.localidad = new Localidad(de.getLocalidad());
+		//this.localidad = new Localidad(de.getLocalidad());
 		this.calle = de.getCalle();
 		this.numero = de.getNumero();
 		this.piso = de.getPiso();
@@ -140,7 +140,7 @@ public class Direccion {
 	}
 	
 	public DireccionEntity toEntity() {
-		return new DireccionEntity(longitud, latitud, provincia, new LocalidadEntity(localidad.getId(), localidad.getDescripcion()), calle, numero, piso, unidad, entreCalles, codigoPostal, geolocalizado);
+		return new DireccionEntity(longitud, latitud, provincia, new LocalidadEntity(localidad.getDescripcion()), calle, numero, piso, unidad, entreCalles, codigoPostal, geolocalizado);
 	}
 
 	public void save() {

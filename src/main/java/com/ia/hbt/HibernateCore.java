@@ -6,6 +6,9 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 import com.ia.entities.ClienteEntity;
+import com.ia.entities.DireccionEntity;
+import com.ia.entities.LocalidadEntity;
+import com.ia.negocio.Localidad;
 
 public class HibernateCore {
 	
@@ -21,6 +24,8 @@ public class HibernateCore {
 			// Ac� van todas las entities. 
 			// Agreguen una por una, sino va a tirar error
 			config.addAnnotatedClass(ClienteEntity.class);
+			config.addAnnotatedClass(DireccionEntity.class);
+			config.addAnnotatedClass(LocalidadEntity.class);
 			sessionFactory = config.buildSessionFactory(serviceRegistry);
 		}
 		catch (Throwable thr){
