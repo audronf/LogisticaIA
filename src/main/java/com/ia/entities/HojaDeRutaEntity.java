@@ -1,12 +1,17 @@
 package com.ia.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -24,6 +29,10 @@ public class HojaDeRutaEntity {
 	private DistribuidorEntity distribuidor;
 	private LocalDate fechaGeneracion;
 	private LocalDate fechaCierre;
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "HojasDeRuta_Pedidos", joinColumns = {@JoinColumn(name = "codHDR")}, inverseJoinColumns = @JoinColumn(name="codPedido"))
+	private List<PedidoEntity> pedidos;
+	
 	
 	public HojaDeRutaEntity(){}
 	
@@ -35,6 +44,7 @@ public class HojaDeRutaEntity {
 		this.distribuidor = distribuidor;
 		this.fechaGeneracion = fechaGeneracion;
 		this.fechaCierre = fechaCierre;
+		this.pedidos = new ArrayList<PedidoEntity>();
 	}
 
 	public int getCodHDR() {
@@ -75,6 +85,14 @@ public class HojaDeRutaEntity {
 
 	public void setFechaCierre(LocalDate fechaCierre) {
 		this.fechaCierre = fechaCierre;
+	}
+
+	public List<PedidoEntity> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<PedidoEntity> pedidos) {
+		this.pedidos = pedidos;
 	}
 	
 	
