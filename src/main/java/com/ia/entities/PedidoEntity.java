@@ -2,6 +2,8 @@ package com.ia.entities;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,12 +19,13 @@ public class PedidoEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int codPedido;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="idCliente")
 	private ClienteEntity cliente;
-	@OneToMany
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="idDireccion")
 	private DireccionEntity direccion;
-	@OneToMany
+	@OneToOne
 	@JoinColumn(name="dniDistribuidor")
 	private DistribuidorEntity distribuidor;
 	private boolean fragil;
@@ -33,8 +36,7 @@ public class PedidoEntity {
 	private boolean logistica;
 	private String incidencia;
 
-	public PedidoEntity() {
-	}
+	public PedidoEntity() {}
 
 	public PedidoEntity(ClienteEntity cliente, DireccionEntity direccion,
 			DistribuidorEntity distribuidor, boolean fragil, String informacion, LocalDate fechaIngreso,

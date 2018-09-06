@@ -47,7 +47,7 @@ public class Controller {
 			d.setGeolocalizado(direccion.isGeolocalizado());
 			d.save();
 		}
-		Pedido p = new Pedido(c, d, dist, fragil, informacion, logistica);
+		Pedido p = new Pedido(c, d, /*dist,*/ fragil, informacion, logistica);
 		p.save();
 			
 	}

@@ -10,6 +10,7 @@ import com.ia.entities.DireccionEntity;
 import com.ia.entities.DistribuidorEntity;
 import com.ia.entities.DistribuidorLocalidadEntity;
 import com.ia.entities.LocalidadEntity;
+import com.ia.entities.PedidoEntity;
 import com.ia.negocio.Localidad;
 
 public class HibernateCore {
@@ -30,6 +31,7 @@ public class HibernateCore {
 			config.addAnnotatedClass(LocalidadEntity.class);
 			config.addAnnotatedClass(DistribuidorEntity.class);
 			config.addAnnotatedClass(DistribuidorLocalidadEntity.class);
+			config.addAnnotatedClass(PedidoEntity.class);
 			sessionFactory = config.buildSessionFactory(serviceRegistry);
 		}
 		catch (Throwable thr){

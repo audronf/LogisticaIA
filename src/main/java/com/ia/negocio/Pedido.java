@@ -17,11 +17,11 @@ public class Pedido {
 	private boolean logistica;
 	private String incidencia;
 	
-	public Pedido(Cliente cliente, Direccion direccion, Distribuidor distribuidor, boolean fragil, String informacion, boolean logistica) {
+	public Pedido(Cliente cliente, Direccion direccion, /*Distribuidor distribuidor,*/ boolean fragil, String informacion, boolean logistica) {
 		super();
 		this.cliente = cliente;
 		this.direccion = direccion;
-		this.distribuidor = distribuidor;
+//		this.distribuidor = distribuidor;
 		this.fragil = fragil;
 		this.informacion = informacion;
 		this.fechaIngreso = LocalDate.now();
