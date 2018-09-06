@@ -7,6 +7,8 @@ import org.hibernate.service.ServiceRegistry;
 
 import com.ia.entities.ClienteEntity;
 import com.ia.entities.DireccionEntity;
+import com.ia.entities.DistribuidorEntity;
+import com.ia.entities.DistribuidorLocalidadEntity;
 import com.ia.entities.LocalidadEntity;
 import com.ia.negocio.Localidad;
 
@@ -26,6 +28,8 @@ public class HibernateCore {
 			config.addAnnotatedClass(ClienteEntity.class);
 			config.addAnnotatedClass(DireccionEntity.class);
 			config.addAnnotatedClass(LocalidadEntity.class);
+			config.addAnnotatedClass(DistribuidorEntity.class);
+			config.addAnnotatedClass(DistribuidorLocalidadEntity.class);
 			sessionFactory = config.buildSessionFactory(serviceRegistry);
 		}
 		catch (Throwable thr){

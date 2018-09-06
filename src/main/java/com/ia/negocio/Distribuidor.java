@@ -90,8 +90,8 @@ public class Distribuidor {
 		de.setNombre(nombre);
 		de.setPassword(password);
 		de.setUsername(username);
-		for (Localidad l : localidades) 
-			de.getLocalidades().add(new LocalidadEntity(l.getId(), l.getDescripcion()));
+//		for (Localidad l : localidades) 
+//			de.getLocalidades().add(new LocalidadEntity(l.getDescripcion()));
 		return de;
 	}
 }
