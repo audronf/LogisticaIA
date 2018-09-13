@@ -9,6 +9,7 @@ import java.util.Map;
 import com.ia.dao.ClienteDAO;
 import com.ia.dao.DireccionDAO;
 import com.ia.dao.DistribuidorDAO;
+import com.ia.dao.PedidoDAO;
 import com.ia.dto.ClienteDTO;
 import com.ia.dto.DireccionDTO;
 import com.ia.dto.DistribuidorDTO;
@@ -93,7 +94,20 @@ public class Controller {
 	
 	}
 	
-
+	public String getEstadoPedido(int codPedido) {
+		String estado = null;
+		Pedido p = PedidoDAO.getInstance().findByCodigo(codPedido);
+		if (p.getFechaIngreso()!=null &&p.getFechaSalida()==null && p.getFechaEntrega()==null) //Todavía no salió
+			estado = "En depósito";
+		else if (p.getFechaIngreso()!=null && p.getFechaSalida()!=null && p.getFechaEntrega()==null) //Todavía no fue entregado
+			estado = "En camino";
+		else if (p.getFechaEntrega()!=null && p.getFechaIngreso()!=null && p.getFechaSalida()!=null)
+			estado = "Entregado";
+		else
+			estado = "No existe";
+		return estado;
+	}
+	
 	private Distribuidor buscarDistribuidor(String dni) {
 		return DistribuidorDAO.getInstance().findByDNI(dni);
 	}

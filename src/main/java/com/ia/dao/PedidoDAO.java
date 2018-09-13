@@ -3,8 +3,10 @@ package com.ia.dao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import com.ia.entities.DistribuidorEntity;
 import com.ia.entities.PedidoEntity;
 import com.ia.hbt.HibernateCore;
+import com.ia.negocio.Distribuidor;
 import com.ia.negocio.Pedido;
 
 public class PedidoDAO {
@@ -17,6 +19,20 @@ public class PedidoDAO {
 		if (instance==null)
 			instance = new PedidoDAO();
 		return instance;
+	}
+	
+	public Pedido findByCodigo(int codigoPedido) {
+		PedidoEntity pe;
+		SessionFactory sf = HibernateCore.getSessionFactory();
+		Session session = sf.openSession();
+		pe = (PedidoEntity) session.createQuery("from PedidoEntity where dni = ?1").setParameter(1, codigoPedido)
+				.uniqueResult();
+		session.close();
+		if (pe != null) {
+			Pedido p = new Pedido(pe);
+			return p;
+		} else
+			return null;
 	}
 	
 	public void saveOrUpdate(Pedido p) {

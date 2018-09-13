@@ -3,6 +3,7 @@ package com.ia.negocio;
 import java.time.LocalDate;
 
 import com.ia.dao.PedidoDAO;
+import com.ia.entities.PedidoEntity;
 
 public class Pedido {
 	private int codPedido;
@@ -28,6 +29,18 @@ public class Pedido {
 		this.logistica = logistica;
 	}
 
+	public Pedido(PedidoEntity pe) {
+		super();
+		this.cliente = new Cliente(pe.getCliente());
+		this.direccion = new Direccion(pe.getDireccion());
+		this.fragil = pe.isFragil();
+		this.fechaEntrega = pe.getFechaEntrega();
+		this.fechaSalida = pe.getFechaSalida();
+		this.fechaIngreso = pe.getFechaIngreso();
+		this.informacion = pe.getInformacion();
+		this.logistica = pe.isLogistica();
+	}
+	
 	public int getCodPedido() {
 		return codPedido;
 	}
