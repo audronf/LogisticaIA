@@ -35,6 +35,9 @@ public class Controller {
 	public void altaPedido(ClienteDTO cliente, DireccionDTO direccion, DistribuidorDTO distribuidor, boolean fragil, String informacion, boolean logistica) {
 		Cliente c = buscarCliente(cliente.getIdentificador());
 		Direccion d = buscarDireccion(direccion.getLatitud(), direccion.getLongitud());
+		
+		// Esto no tiene sentido.
+		// Tiene que haber un método asignarDistribuidor(Distribuidor d) en la clase Pedido, o directamente manejarnos con las hojas de ruta
 		Distribuidor dist = buscarDistribuidor(distribuidor.getDni());
 		if (c==null) {
 			c = new Cliente(cliente.getIdentificador(), cliente.getNombre(), cliente.getEmail());
@@ -49,6 +52,7 @@ public class Controller {
 		}
 		Pedido p = new Pedido(c, d, /*dist,*/ fragil, informacion, logistica);
 		p.save();
+		EmailController.getInstance().enviarCorreoNuevoPedido(p);
 			
 	}
 	
