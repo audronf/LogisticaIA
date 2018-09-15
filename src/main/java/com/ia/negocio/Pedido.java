@@ -3,6 +3,7 @@ package com.ia.negocio;
 import java.time.LocalDate;
 
 import com.ia.dao.PedidoDAO;
+import com.ia.dto.PedidoDTO;
 import com.ia.entities.PedidoEntity;
 
 public class Pedido {
@@ -131,6 +132,31 @@ public class Pedido {
 	
 	public void save() {
 		PedidoDAO.getInstance().saveOrUpdate(this);
+	}
+	
+	public PedidoDTO toDTO() {
+		PedidoDTO pedido = new PedidoDTO(codPedido, fragil, informacion, logistica, incidencia);
+		pedido.setCliente(cliente.toDTO());
+		pedido.setDireccion(direccion.toDTO());
+		if (this.fechaIngreso!=null) {
+			pedido.setFechaIngreso(this.fechaIngreso);
+			pedido.setEstado("En depósito");
+		}
+		else
+			pedido.setFechaIngreso(null);
+		if (this.fechaEntrega!=null) {
+			pedido.setFechaEntrega(this.fechaEntrega);
+			pedido.setEstado("En camino");
+		}
+		else
+			pedido.setFechaEntrega(null);
+		if (this.fechaSalida!=null) {
+			pedido.setFechaSalida(this.fechaSalida);
+			pedido.setEstado("Entregado");
+		}
+		else
+			pedido.setFechaSalida(null);
+		return pedido;
 	}
 
 	

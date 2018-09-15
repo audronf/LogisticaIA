@@ -25,7 +25,7 @@ public class PedidoDAO {
 		PedidoEntity pe;
 		SessionFactory sf = HibernateCore.getSessionFactory();
 		Session session = sf.openSession();
-		pe = (PedidoEntity) session.createQuery("from PedidoEntity where dni = ?1").setParameter(1, codigoPedido)
+		pe = (PedidoEntity) session.createQuery("from PedidoEntity where codPedido = ?1").setParameter(1, codigoPedido)
 				.uniqueResult();
 		session.close();
 		if (pe != null) {

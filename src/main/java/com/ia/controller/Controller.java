@@ -13,6 +13,7 @@ import com.ia.dao.PedidoDAO;
 import com.ia.dto.ClienteDTO;
 import com.ia.dto.DireccionDTO;
 import com.ia.dto.DistribuidorDTO;
+import com.ia.dto.PedidoDTO;
 import com.ia.negocio.Cliente;
 import com.ia.negocio.Direccion;
 import com.ia.negocio.Distribuidor;
@@ -95,7 +96,7 @@ public class Controller {
 	}
 	
 	public String getEstadoPedido(int codPedido) {
-		String estado = null;
+		String estado;
 		Pedido p = PedidoDAO.getInstance().findByCodigo(codPedido);
 		if (p.getFechaIngreso()!=null &&p.getFechaSalida()==null && p.getFechaEntrega()==null) //Todavía no salió
 			estado = "En depósito";
@@ -106,6 +107,14 @@ public class Controller {
 		else
 			estado = "No existe";
 		return estado;
+	}
+	
+	public PedidoDTO getPedido(int codPedido) {
+		Pedido p = PedidoDAO.getInstance().findByCodigo(codPedido);
+		p.setDistribuidor(null);
+		if (p!=null)
+			return p.toDTO();
+		return null;
 	}
 	
 	private Distribuidor buscarDistribuidor(String dni) {

@@ -38,7 +38,7 @@ public class Direccion {
 		this.longitud = de.getLongitud();
 		this.latitud = de.getLatitud();
 		this.provincia = de.getProvincia();
-		//this.localidad = new Localidad(de.getLocalidad());
+		this.localidad = new Localidad(de.getLocalidad());
 		this.calle = de.getCalle();
 		this.numero = de.getNumero();
 		this.piso = de.getPiso();
