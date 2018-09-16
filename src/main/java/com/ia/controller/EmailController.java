@@ -41,8 +41,9 @@ public class EmailController {
 	        message.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));   //Se podrían añadir varios de la misma manera
 	        message.setSubject(asunto);
 	        message.setText(
-	        		"Hola <b>"+p.getCliente().getNombre() + "</b>,<br>El código de tu nuevo pedido es: "+ p.getCodPedido()+"<br><br>"
-	        				+ "Podés usarlo para controlar su estado, ingresándolo en <a href=\"www.sarasa.com\">Sara S.A.</a>",
+	        		"<a href=\"http://localhost:8080/Web/ingresoCodigo.html\"><img src=\"http://i64.tinypic.com/qywoyc.png\"></a><br><br>"
+	        		+ "Hola <b>"+p.getCliente().getNombre() + "</b>,<br>El código de tu nuevo pedido es: <b>"+ p.getCodPedido()+"</b><br><br>"
+	        				+ "Podés usarlo para controlar su estado, ingresándolo en <a href=\"http://localhost:8080/Web/ingresoCodigo.html\">Sara S.A.</a>",
 	        		"ISO-8859-1",
 	        		"html");	        Transport transport = session.getTransport("smtp");
 	        transport.connect("smtp.gmail.com", remitente, "pass");
