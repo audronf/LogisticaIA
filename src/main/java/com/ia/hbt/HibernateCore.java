@@ -9,6 +9,8 @@ import com.ia.entities.ClienteEntity;
 import com.ia.entities.DireccionEntity;
 import com.ia.entities.DistribuidorEntity;
 import com.ia.entities.DistribuidorLocalidadEntity;
+import com.ia.entities.HojaDeRutaEntity;
+import com.ia.entities.HojaDeRutaPedidoEntity;
 import com.ia.entities.LocalidadEntity;
 import com.ia.entities.PedidoEntity;
 import com.ia.negocio.Localidad;
@@ -32,6 +34,8 @@ public class HibernateCore {
 			config.addAnnotatedClass(DistribuidorEntity.class);
 			config.addAnnotatedClass(DistribuidorLocalidadEntity.class);
 			config.addAnnotatedClass(PedidoEntity.class);
+			config.addAnnotatedClass(HojaDeRutaEntity.class);
+			config.addAnnotatedClass(HojaDeRutaPedidoEntity.class);
 			sessionFactory = config.buildSessionFactory(serviceRegistry);
 		}
 		catch (Throwable thr){

@@ -13,7 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name="HojasDeRuta")
@@ -21,15 +25,16 @@ public class HojaDeRutaEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int codHDR;
-	@OneToMany
+	@OneToOne
 	@JoinColumn(name="idLocalidad")
 	private LocalidadEntity localidad;
-	@OneToMany
+	@OneToOne
 	@JoinColumn(name="dniDistribuidor")
 	private DistribuidorEntity distribuidor;
 	private LocalDate fechaGeneracion;
 	private LocalDate fechaCierre;
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinTable(name = "HojasDeRuta_Pedidos", joinColumns = {@JoinColumn(name = "codHDR")}, inverseJoinColumns = @JoinColumn(name="codPedido"))
 	private List<PedidoEntity> pedidos;
 	

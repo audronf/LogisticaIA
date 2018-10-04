@@ -1,0 +1,70 @@
+package com.ia.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
+import org.hibernate.transform.Transformers;
+
+import com.ia.entities.HojaDeRutaEntity;
+import com.ia.entities.LocalidadEntity;
+import com.ia.hbt.HibernateCore;
+import com.ia.negocio.HojaDeRuta;
+
+public class HojaDeRutaDAO {
+
+	private static HojaDeRutaDAO instance;
+	
+	private HojaDeRutaDAO() {}
+	
+	public static HojaDeRutaDAO getInstance() {
+		if (instance == null)
+			instance = new HojaDeRutaDAO();
+		return instance;
+	}
+	
+	public HojaDeRuta findByCodigo(int codHDR) {
+		HojaDeRutaEntity hdr = null;
+		SessionFactory sf = HibernateCore.getSessionFactory();
+		Session session = sf.openSession();
+//		hdr = (HojaDeRutaEntity)session.createQuery("codHDR, idLocalidad, fechaGeneracion, fechaCierre from HojaDeRutaEntity where codHDR = ?1")
+//				.setParameter(1, codHDR)
+//				.uniqueResult();
+		Criteria cr = session.createCriteria(HojaDeRutaEntity.class)
+			    .setProjection(Projections.projectionList()
+			      .add(Projections.property("codHDR"), "codHDR")
+			      .add(Projections.property("localidad"), "localidad")
+			      .add(Projections.property("fechaGeneracion"), "fechaGeneracion")
+			      .add(Projections.property("fechaCierre"), "fechaCierre"))
+			    .setResultTransformer(Transformers.aliasToBean(HojaDeRutaEntity.class));
+		hdr = (HojaDeRutaEntity) cr.uniqueResult();
+		session.close();
+		return new HojaDeRuta(hdr);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<HojaDeRuta> findAll(){
+		List<HojaDeRutaEntity> hdrs = new ArrayList<HojaDeRutaEntity>();
+		List<HojaDeRuta> ret = new ArrayList<HojaDeRuta>();
+		SessionFactory sf = HibernateCore.getSessionFactory();
+		Session session = sf.openSession();
+		hdrs = (List<HojaDeRutaEntity>)session.createQuery("from HojaDeRutaEntity").list();
+		for (HojaDeRutaEntity h : hdrs) 
+			ret.add(new HojaDeRuta(h));
+		session.close();
+		return ret;
+	}
+	
+	public void saveOrUpdate(HojaDeRuta hdr) {
+		HojaDeRutaEntity h = new HojaDeRutaEntity(hdr.getCodHDR(), new LocalidadEntity(hdr.getLocalidad().getId(), hdr.getLocalidad().getDescripcion()), hdr.getDistribuidor().toEntity(), hdr.getFechaGeneracion(), hdr.getFechaCierre());
+		SessionFactory sf = HibernateCore.getSessionFactory();
+		Session session = sf.openSession();
+		session.beginTransaction();
+		session.merge(h);
+		session.getTransaction().commit();
+		session.close();
+	}
+}

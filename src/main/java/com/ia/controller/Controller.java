@@ -9,10 +9,12 @@ import java.util.Map;
 import com.ia.dao.ClienteDAO;
 import com.ia.dao.DireccionDAO;
 import com.ia.dao.DistribuidorDAO;
+import com.ia.dao.HojaDeRutaDAO;
 import com.ia.dao.PedidoDAO;
 import com.ia.dto.ClienteDTO;
 import com.ia.dto.DireccionDTO;
 import com.ia.dto.DistribuidorDTO;
+import com.ia.dto.HojaDeRutaDTO;
 import com.ia.dto.PedidoDTO;
 import com.ia.negocio.Cliente;
 import com.ia.negocio.Direccion;
@@ -114,7 +116,24 @@ public class Controller {
 		p.setDistribuidor(null);
 		if (p!=null)
 			return p.toDTO();
-		return null;
+		else
+			return null;
+	}
+	
+	public List<HojaDeRutaDTO> verHojasDeRuta() {
+		List<HojaDeRuta> hdrs = HojaDeRutaDAO.getInstance().findAll();
+		List<HojaDeRutaDTO> hdto = new ArrayList<HojaDeRutaDTO>();
+		for (HojaDeRuta h : hdrs)
+			hdto.add(h.toDTO());
+		return hdto;
+	}
+	
+	public List<DistribuidorDTO> verDistribuidoresLocalidad(String localidad){
+		List<Distribuidor> distribuidores = DistribuidorDAO.getInstance().findByLocalidad(localidad);
+		List<DistribuidorDTO> ddto = new ArrayList<DistribuidorDTO>();
+		for (Distribuidor d : distribuidores)
+			ddto.add(d.toDTO());
+		return ddto;
 	}
 	
 	private Distribuidor buscarDistribuidor(String dni) {
@@ -127,5 +146,12 @@ public class Controller {
 
 	private Cliente buscarCliente(String identificador) {
 		return ClienteDAO.getInstance().findByID(identificador);
+	}
+
+	public void asignarHojaDeRuta(int codHDR, String dniDistribuidor) {
+		HojaDeRuta hdr = HojaDeRutaDAO.getInstance().findByCodigo(codHDR);
+		Distribuidor d = DistribuidorDAO.getInstance().findByDNI(dniDistribuidor);
+		System.out.println(hdr + " " + d);
+		hdr.asignarDistribuidor(d);
 	}
 }

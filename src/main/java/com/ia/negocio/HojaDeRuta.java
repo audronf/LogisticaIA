@@ -1,7 +1,16 @@
 package com.ia.negocio;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JOptionPane;
+
+import com.ia.dao.HojaDeRutaDAO;
+import com.ia.dto.HojaDeRutaDTO;
+import com.ia.dto.PedidoDTO;
+import com.ia.entities.HojaDeRutaEntity;
+import com.ia.entities.PedidoEntity;
 
 public class HojaDeRuta {
 
@@ -16,7 +25,19 @@ public class HojaDeRuta {
 		super();
 		this.localidad = localidad;
 		this.distribuidor = distribuidor;
-		this.fechaGeneracion = LocalDate.now();;
+		this.fechaGeneracion = LocalDate.now();
+	}
+
+	public HojaDeRuta(HojaDeRutaEntity h) {
+		super();
+		this.codHDR = h.getCodHDR();
+		this.localidad = new Localidad(h.getLocalidad());
+		if (this.distribuidor!=null)
+			this.distribuidor = new Distribuidor(h.getDistribuidor());
+		this.fechaCierre = h.getFechaCierre();
+		this.fechaGeneracion = h.getFechaGeneracion();
+//		for (PedidoEntity p : h.getPedidos())
+//			this.pedidos.add(new Pedido(p));
 	}
 
 	public int getCodHDR() {
@@ -67,6 +88,19 @@ public class HojaDeRuta {
 		this.pedidos = pedidos;
 	}
 
+	public HojaDeRutaDTO toDTO() {
+		// Seteo el pedido como null porque no hace falta recuperarlo por ahora
+		return new HojaDeRutaDTO(codHDR, localidad.toDTO(), fechaGeneracion, fechaCierre, null);
+	}
+
+	public void asignarDistribuidor(Distribuidor d) {
+		this.distribuidor = d;
+		save();
+	}
+	
+	public void save() {
+		HojaDeRutaDAO.getInstance().saveOrUpdate(this);
+	}
 	
 	
 }
