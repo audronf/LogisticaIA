@@ -4,6 +4,9 @@ import java.time.LocalDate;
 
 import com.ia.dao.PedidoDAO;
 import com.ia.dto.PedidoDTO;
+import com.ia.entities.ClienteEntity;
+import com.ia.entities.DireccionEntity;
+import com.ia.entities.DistribuidorEntity;
 import com.ia.entities.PedidoEntity;
 
 public class Pedido {
@@ -19,11 +22,11 @@ public class Pedido {
 	private boolean logistica;
 	private String incidencia;
 	
-	public Pedido(Cliente cliente, Direccion direccion, /*Distribuidor distribuidor,*/ boolean fragil, String informacion, boolean logistica) {
+	public Pedido(Cliente cliente, Direccion direccion, Distribuidor distribuidor, boolean fragil, String informacion, boolean logistica) {
 		super();
 		this.cliente = cliente;
 		this.direccion = direccion;
-//		this.distribuidor = distribuidor;
+		this.distribuidor = distribuidor;
 		this.fragil = fragil;
 		this.informacion = informacion;
 		this.fechaIngreso = LocalDate.now();
@@ -32,8 +35,10 @@ public class Pedido {
 
 	public Pedido(PedidoEntity pe) {
 		super();
+		this.codPedido = pe.getCodPedido();
 		this.cliente = new Cliente(pe.getCliente());
 		this.direccion = new Direccion(pe.getDireccion());
+		this.distribuidor = new Distribuidor(pe.getDistribuidor());
 		this.fragil = pe.isFragil();
 		this.fechaEntrega = pe.getFechaEntrega();
 		this.fechaSalida = pe.getFechaSalida();
@@ -112,6 +117,11 @@ public class Pedido {
 
 	public void setFechaEntrega(LocalDate fechaEntrega) {
 		this.fechaEntrega = fechaEntrega;
+		updateFechaEntrega();
+	}
+
+	private void updateFechaEntrega() {
+		PedidoDAO.getInstance().updateFechaEntrega(this);
 	}
 
 	public boolean isLogistica() {
@@ -128,8 +138,13 @@ public class Pedido {
 
 	public void setIncidencia(String incidencia) {
 		this.incidencia = incidencia;
+		updateIncidencia();
 	}
 	
+	private void updateIncidencia() {
+		PedidoDAO.getInstance().updateIncidencia(this);
+	}
+
 	public void save() {
 		PedidoDAO.getInstance().saveOrUpdate(this);
 	}
@@ -157,6 +172,13 @@ public class Pedido {
 		else
 			pedido.setFechaSalida(null);
 		return pedido;
+	}
+
+	public PedidoEntity toEntity() {
+		PedidoEntity pe = new PedidoEntity(cliente.toEntity(), direccion.toEntity(), distribuidor.toEntity(), fragil, informacion, fechaIngreso, fechaSalida,
+				fechaEntrega, logistica, incidencia);
+		pe.setCodPedido(codPedido);
+		return pe;
 	}
 
 	

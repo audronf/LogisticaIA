@@ -6,6 +6,7 @@ import com.ia.entities.DireccionEntity;
 import com.ia.entities.LocalidadEntity;
 
 public class Direccion {
+	private int idDireccion;
 	private String longitud;
 	private String latitud;
 	private String provincia;
@@ -35,6 +36,7 @@ public class Direccion {
 
 	public Direccion(DireccionEntity de) {
 		super();
+		this.idDireccion = de.getIdDireccion();
 		this.longitud = de.getLongitud();
 		this.latitud = de.getLatitud();
 		this.provincia = de.getProvincia();
@@ -45,6 +47,14 @@ public class Direccion {
 		this.unidad = de.getUnidad();
 		this.entreCalles = de.getEntreCalles();
 		this.codigoPostal = de.getCodigoPostal();
+	}
+	
+	public int getIdDireccion() {
+		return idDireccion;
+	}
+
+	public void setIdDireccion(int idDireccion) {
+		this.idDireccion = idDireccion;
 	}
 	
 	public String getLongitud() {

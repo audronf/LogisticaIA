@@ -32,8 +32,9 @@ public class Distribuidor {
 		this.username = de.getUsername();
 		this.password = de.getPassword();
 		this.localidades = new ArrayList<Localidad>();
-		for (LocalidadEntity loc : de.getLocalidades())
+		for (LocalidadEntity loc : de.getLocalidades()) {
 			localidades.add(new Localidad(loc));
+		}
 	}
 
 	public String getDni() {

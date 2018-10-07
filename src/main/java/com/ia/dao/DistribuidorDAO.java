@@ -9,9 +9,11 @@ import org.hibernate.SessionFactory;
 import com.ia.entities.DistribuidorEntity;
 import com.ia.entities.DistribuidorLocalidadEntity;
 import com.ia.entities.LocalidadEntity;
+import com.ia.entities.PedidoEntity;
 import com.ia.hbt.HibernateCore;
 import com.ia.negocio.Distribuidor;
 import com.ia.negocio.Localidad;
+import com.ia.negocio.Pedido;
 
 public class DistribuidorDAO {
 
@@ -89,5 +91,30 @@ public class DistribuidorDAO {
 		session.close();
 		session2.close();
 		return ret;
+	}
+
+	public Distribuidor findByUsername(String username) {
+		DistribuidorEntity ce;
+		SessionFactory sf = HibernateCore.getSessionFactory();
+		Session session = sf.openSession();
+		ce = (DistribuidorEntity) session.createQuery("from DistribuidorEntity where username = ?1").setParameter(1, username)
+				.uniqueResult();
+		session.close();
+		if (ce != null) {
+			Distribuidor c = new Distribuidor(ce);
+			return c;
+		} else
+			return null;
+	}
+	
+	public boolean proveedorValido(String usr, String pass) {
+		DistribuidorEntity de = null;
+		SessionFactory sf = HibernateCore.getSessionFactory();
+		Session session = sf.openSession();
+		de = (DistribuidorEntity) session.createQuery("from DistribuidorEntity where username = ?0 and password = ?1")
+				.setParameter(0, usr)
+				.setParameter(1, pass)
+				.uniqueResult();
+		return (de!=null);
 	}
 }

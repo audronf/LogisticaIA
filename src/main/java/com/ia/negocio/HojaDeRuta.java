@@ -94,6 +94,8 @@ public class HojaDeRuta {
 	}
 
 	public void asignarDistribuidor(Distribuidor d) {
+		for (Pedido p : pedidos)
+			p.setDistribuidor(d);
 		this.distribuidor = d;
 		save();
 	}

@@ -116,6 +116,12 @@ public class PedidoDTO {
 	public void setIncidencia(String incidencia) {
 		this.incidencia = incidencia;
 	}
+
+	@Override
+	public String toString() {
+		return codPedido + " - " + direccion.getCalle() + " " + direccion.getNumero() + ", " + direccion.getLocalidad().getDescripcion() + " - " + informacion;
+	}
+	
 	
 	
 	

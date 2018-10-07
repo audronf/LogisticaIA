@@ -1,5 +1,9 @@
 package com.ia.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -42,6 +46,51 @@ public class PedidoDAO {
 		session.beginTransaction();
 		session.saveOrUpdate(pe);
 		session.getTransaction().commit();
+		session.close();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Pedido> verPedidosPendientes(String username) {
+		List<Pedido> ret = new ArrayList<Pedido>();
+		DistribuidorEntity dist = DistribuidorDAO.getInstance().findByUsername(username).toEntity();
+		List<PedidoEntity> pedidos = null;
+		SessionFactory sf = HibernateCore.getSessionFactory();
+		Session session = sf.openSession();
+		pedidos = (List<PedidoEntity>) session.createQuery("from PedidoEntity where dniDistribuidor = ?1 and fechaEntrega = NULL and incidencia = NULL")
+				.setParameter(1, dist.getDni())
+				.list();
+		for (PedidoEntity p : pedidos)
+			ret.add(new Pedido(p));
+		return ret;
+	}
+
+	public void updateFechaEntrega(Pedido p) {
+//		Pedido pe = findByCodigo(p.getCodPedido());
+//		pe.setFechaEntrega(p.getFechaEntrega());
+		SessionFactory sf = HibernateCore.getSessionFactory();
+		Session session = sf.openSession();
+		session.beginTransaction();
+		Query query = session.createSQLQuery(
+			    "update Pedidos set fechaEntrega = ?1" + " where codPedido = ?2");
+			query.setParameter(1, p.getFechaEntrega());
+			query.setParameter(2, p.getCodPedido());
+			query.executeUpdate();
+			session.getTransaction().commit();
+
+		session.close();
+	}
+
+	public void updateIncidencia(Pedido p) {
+		SessionFactory sf = HibernateCore.getSessionFactory();
+		Session session = sf.openSession();
+		session.beginTransaction();
+		Query query = session.createSQLQuery(
+			    "update Pedidos set incidencia = ?1" + " where codPedido = ?2");
+			query.setParameter(1, p.getIncidencia());
+			query.setParameter(2, p.getCodPedido());
+			query.executeUpdate();
+			session.getTransaction().commit();
+
 		session.close();
 	}
 }

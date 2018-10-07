@@ -40,8 +40,6 @@ public class Controller {
 		Cliente c = buscarCliente(cliente.getIdentificador());
 		Direccion d = buscarDireccion(direccion.getLatitud(), direccion.getLongitud());
 		
-		// Esto no tiene sentido.
-		// Tiene que haber un método asignarDistribuidor(Distribuidor d) en la clase Pedido, o directamente manejarnos con las hojas de ruta
 		Distribuidor dist = buscarDistribuidor(distribuidor.getDni());
 		if (c==null) {
 			c = new Cliente(cliente.getIdentificador(), cliente.getNombre(), cliente.getEmail());
@@ -54,7 +52,7 @@ public class Controller {
 			d.setGeolocalizado(direccion.isGeolocalizado());
 			d.save();
 		}
-		Pedido p = new Pedido(c, d, /*dist,*/ fragil, informacion, logistica);
+		Pedido p = new Pedido(c, d, null, fragil, informacion, logistica);
 		p.save();
 		EmailController.getInstance().enviarCorreoNuevoPedido(p);
 			
@@ -153,5 +151,28 @@ public class Controller {
 		Distribuidor d = DistribuidorDAO.getInstance().findByDNI(dniDistribuidor);
 		System.out.println(hdr + " " + d);
 		hdr.asignarDistribuidor(d);
+	}
+
+	public boolean verificarCredencialesProveedor(String usr, String pass) {
+		return DistribuidorDAO.getInstance().proveedorValido(usr, pass);
+	}
+
+	public List<PedidoDTO> verPedidosPendientes(String username) {
+		List<Pedido> pedidos = PedidoDAO.getInstance().verPedidosPendientes(username);
+		List<PedidoDTO> pdto = new ArrayList<PedidoDTO>();
+		for (Pedido p : pedidos)
+			pdto.add(p.toDTO());
+		return pdto;
+	}
+
+	public void pedidoEntregado(String codPedido) {
+		Pedido p = PedidoDAO.getInstance().findByCodigo(Integer.parseInt(codPedido));
+		p.setFechaEntrega(LocalDate.now());
+	}
+
+	public void registrarIncidencia(String codPedido, String text) {
+		Pedido p = PedidoDAO.getInstance().findByCodigo(Integer.parseInt(codPedido));
+		p.setIncidencia(text);
+
 	}
 }

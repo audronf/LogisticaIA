@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+@SuppressWarnings("deprecation")
 @Entity
 @Table(name="Pedidos")
 public class PedidoEntity {
@@ -26,7 +27,7 @@ public class PedidoEntity {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="idDireccion")
 	private DireccionEntity direccion;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="dniDistribuidor")
 	private DistribuidorEntity distribuidor;
 	private boolean fragil;
