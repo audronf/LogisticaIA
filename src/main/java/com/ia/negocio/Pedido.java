@@ -109,6 +109,11 @@ public class Pedido {
 
 	public void setFechaSalida(LocalDate fechaSalida) {
 		this.fechaSalida = fechaSalida;
+		updateFechaSalida();
+	}
+
+	private void updateFechaSalida() {
+		PedidoDAO.getInstance().updateFechaSalida(this);
 	}
 
 	public LocalDate getFechaEntrega() {

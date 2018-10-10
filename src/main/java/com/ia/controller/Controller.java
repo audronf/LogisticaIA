@@ -58,8 +58,13 @@ public class Controller {
 			
 	}
 	
-	public void llenarHojaDeRuta(List<Pedido> pedidos)
-	{
+	public void pedidosDiarios(){
+		List <Pedido> pedidos = PedidoDAO.getInstance().pedidosSinAsignar();
+		if(!pedidos.isEmpty())
+			llenarHojaDeRuta(pedidos);
+	}
+	
+	public void llenarHojaDeRuta(List<Pedido> pedidos){
 		Map<Localidad, List<Pedido>> map = new HashMap<Localidad, List<Pedido>>();
 		for (Pedido item : pedidos) {
 		  List<Pedido> list = map.get(item.getDireccion().getLocalidad());
@@ -80,9 +85,14 @@ public class Controller {
 	private void asignarHojaDeRuta(List<Pedido> lista) {
 		if(lista.size()<maxPedidos) //Si tiene menos de 30 pedidos, listo, se crea la hdr y se le asigna esa lista de pedidos
 		{
-			HojaDeRuta hdr = new HojaDeRuta(lista.get(0).getDireccion().getLocalidad(),null,LocalDate.now());
+			for(Pedido p : lista)
+			{
+				p.setFechaSalida(LocalDate.now());
+			}
+			HojaDeRuta hdr = new HojaDeRuta(lista.get(0).getDireccion().getLocalidad(),null);
+			lista.remove(0);
 			hdr.setPedidos(lista);
-			//hdr.save();
+			hdr.save();
 		}
 		else
 		{

@@ -63,34 +63,62 @@ public class PedidoDAO {
 			ret.add(new Pedido(p));
 		return ret;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Pedido> pedidosSinAsignar() {
+		List<Pedido> ret = new ArrayList<Pedido>();
+		List<PedidoEntity> pedidos = null;
+		SessionFactory sf = HibernateCore.getSessionFactory();
+		Session session = sf.openSession();
+		pedidos = (List<PedidoEntity>) session.createQuery("from PedidoEntity where fechaSalida = NULL")
+				.list();
+		for (PedidoEntity p : pedidos)
+			ret.add(new Pedido(p));
+		return ret;
+	}
 
+	@SuppressWarnings("deprecation")
 	public void updateFechaEntrega(Pedido p) {
-//		Pedido pe = findByCodigo(p.getCodPedido());
-//		pe.setFechaEntrega(p.getFechaEntrega());
 		SessionFactory sf = HibernateCore.getSessionFactory();
 		Session session = sf.openSession();
 		session.beginTransaction();
+		@SuppressWarnings("rawtypes")
 		Query query = session.createSQLQuery(
 			    "update Pedidos set fechaEntrega = ?1" + " where codPedido = ?2");
 			query.setParameter(1, p.getFechaEntrega());
 			query.setParameter(2, p.getCodPedido());
 			query.executeUpdate();
-			session.getTransaction().commit();
-
+		session.getTransaction().commit();
 		session.close();
 	}
 
+	@SuppressWarnings("deprecation")
 	public void updateIncidencia(Pedido p) {
 		SessionFactory sf = HibernateCore.getSessionFactory();
 		Session session = sf.openSession();
 		session.beginTransaction();
+		@SuppressWarnings("rawtypes")
 		Query query = session.createSQLQuery(
 			    "update Pedidos set incidencia = ?1" + " where codPedido = ?2");
 			query.setParameter(1, p.getIncidencia());
 			query.setParameter(2, p.getCodPedido());
 			query.executeUpdate();
-			session.getTransaction().commit();
+		session.getTransaction().commit();
+		session.close();
+	}
 
+	@SuppressWarnings("deprecation")
+	public void updateFechaSalida(Pedido p) {
+		SessionFactory sf = HibernateCore.getSessionFactory();
+		Session session = sf.openSession();
+		session.beginTransaction();
+		@SuppressWarnings("rawtypes")
+		Query query = session.createSQLQuery(
+			    "update Pedidos set fechaSalida = ?1" + " where codPedido = ?2");
+			query.setParameter(1, p.getFechaSalida());
+			query.setParameter(2, p.getCodPedido());
+			query.executeUpdate();
+		session.getTransaction().commit();
 		session.close();
 	}
 }

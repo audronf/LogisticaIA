@@ -14,14 +14,14 @@ import com.ia.entities.PedidoEntity;
 
 public class HojaDeRuta {
 
-	private int codHDR;
+	private Integer codHDR;
 	private Localidad localidad;
 	private Distribuidor distribuidor;
 	private LocalDate fechaGeneracion;
 	private LocalDate fechaCierre;
 	private List<Pedido> pedidos;
 	
-	public HojaDeRuta(Localidad localidad, Distribuidor distribuidor, LocalDate fechaGeneracion) {
+	public HojaDeRuta(Localidad localidad, Distribuidor distribuidor) {
 		super();
 		this.localidad = localidad;
 		this.distribuidor = distribuidor;
@@ -40,7 +40,7 @@ public class HojaDeRuta {
 //			this.pedidos.add(new Pedido(p));
 	}
 
-	public int getCodHDR() {
+	public Integer getCodHDR() {
 		return codHDR;
 	}
 

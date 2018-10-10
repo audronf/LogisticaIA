@@ -59,11 +59,11 @@ public class HojaDeRutaDAO {
 	}
 	
 	public void saveOrUpdate(HojaDeRuta hdr) {
-		HojaDeRutaEntity h = new HojaDeRutaEntity(hdr.getCodHDR(), new LocalidadEntity(hdr.getLocalidad().getId(), hdr.getLocalidad().getDescripcion()), hdr.getDistribuidor().toEntity(), hdr.getFechaGeneracion(), hdr.getFechaCierre());
+		HojaDeRutaEntity h = new HojaDeRutaEntity(new LocalidadEntity(hdr.getLocalidad().getId(), hdr.getLocalidad().getDescripcion()), null, hdr.getFechaGeneracion());
 		SessionFactory sf = HibernateCore.getSessionFactory();
 		Session session = sf.openSession();
 		session.beginTransaction();
-		session.merge(h);
+		session.saveOrUpdate(h);
 		session.getTransaction().commit();
 		session.close();
 	}
