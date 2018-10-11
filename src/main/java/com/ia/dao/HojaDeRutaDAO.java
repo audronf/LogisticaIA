@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.AnnotationException;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
@@ -14,6 +15,7 @@ import org.hibernate.transform.Transformers;
 import com.ia.entities.HojaDeRutaEntity;
 import com.ia.entities.HojaDeRutaPedidoEntity;
 import com.ia.entities.LocalidadEntity;
+import com.ia.entities.PedidoEntity;
 import com.ia.hbt.HibernateCore;
 import com.ia.negocio.HojaDeRuta;
 import com.ia.negocio.Localidad;
@@ -35,17 +37,18 @@ public class HojaDeRutaDAO {
 		HojaDeRutaEntity hdr = null;
 		SessionFactory sf = HibernateCore.getSessionFactory();
 		Session session = sf.openSession();
-//		hdr = (HojaDeRutaEntity)session.createQuery("codHDR, idLocalidad, fechaGeneracion, fechaCierre from HojaDeRutaEntity where codHDR = ?1")
-//				.setParameter(1, codHDR)
-//				.uniqueResult();
-		Criteria cr = session.createCriteria(HojaDeRutaEntity.class)
-			    .setProjection(Projections.projectionList()
-			      .add(Projections.property("codHDR"), "codHDR")
-			      .add(Projections.property("localidad"), "localidad")
-			      .add(Projections.property("fechaGeneracion"), "fechaGeneracion")
-			      .add(Projections.property("fechaCierre"), "fechaCierre"))
-			    .setResultTransformer(Transformers.aliasToBean(HojaDeRutaEntity.class));
-		hdr = (HojaDeRutaEntity) cr.uniqueResult();
+		hdr = (HojaDeRutaEntity)session.createQuery("from HojaDeRutaEntity where codHDR = ?1")
+				.setParameter(1, codHDR)
+				.uniqueResult();
+//		Criteria cr = session.createCriteria(HojaDeRutaEntity.class)
+//			    .setProjection(Projections.projectionList()
+//			      .add(Projections.property("codHDR"), "codHDR")
+//			      .add(Projections.property("localidad"), "localidad")
+//			      .add(Projections.property("fechaGeneracion"), "fechaGeneracion")
+//			      .add(Projections.property("fechaCierre"), "fechaCierre"))
+//			    .setResultTransformer(Transformers.aliasToBean(HojaDeRutaEntity.class));
+		
+//		hdr = (HojaDeRutaEntity) cr.uniqueResult();
 		session.close();
 		return new HojaDeRuta(hdr);
 	}
@@ -79,12 +82,31 @@ public class HojaDeRutaDAO {
 				session2.saveOrUpdate(hdp);
 				session2.flush();
 			}catch(Exception e) {
-				session2.flush();
+				continue;
 			}
 			session2.flush();
 			session2.getTransaction().commit();
 			session2.close();
 		}
 
+	}
+
+	public List<Pedido> getPedidos(int codHDR) {
+		List<HojaDeRutaPedidoEntity> hdrp = null;
+		List<PedidoEntity> pe = new ArrayList<PedidoEntity>();
+		List<Pedido> ret = new ArrayList<Pedido>();
+		SessionFactory sf = HibernateCore.getSessionFactory();
+		Session session = sf.openSession();
+		hdrp = (ArrayList<HojaDeRutaPedidoEntity>)session.createQuery("from HojaDeRutaPedidoEntity where codHDR = ?1")
+				.setParameter(1, codHDR)
+				.list();
+		for (HojaDeRutaPedidoEntity hdp: hdrp)
+			for (int i = 0; i<=hdrp.size(); i++) {
+				pe.add(hdp.getPedido());
+			}
+		for (PedidoEntity p : pe)
+			ret.add(new Pedido(p));
+		return ret;
+		
 	}
 }

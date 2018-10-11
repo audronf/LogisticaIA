@@ -180,8 +180,9 @@ public class Controller {
 
 	public void asignarHojaDeRuta(int codHDR, String dniDistribuidor) {
 		HojaDeRuta hdr = HojaDeRutaDAO.getInstance().findByCodigo(codHDR);
+		List<Pedido> pedidos = HojaDeRutaDAO.getInstance().getPedidos(codHDR);
+		hdr.setPedidos(pedidos);
 		Distribuidor d = DistribuidorDAO.getInstance().findByDNI(dniDistribuidor);
-		System.out.println(hdr + " " + d);
 		hdr.asignarDistribuidor(d);
 	}
 
