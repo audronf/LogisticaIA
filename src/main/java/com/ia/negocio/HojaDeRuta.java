@@ -21,11 +21,12 @@ public class HojaDeRuta {
 	private LocalDate fechaCierre;
 	private List<Pedido> pedidos;
 	
-	public HojaDeRuta(Localidad localidad, Distribuidor distribuidor) {
+	public HojaDeRuta(Localidad localidad/*, Distribuidor distribuidor*/) {
 		super();
 		this.localidad = localidad;
-		this.distribuidor = distribuidor;
+//		this.distribuidor = distribuidor;
 		this.fechaGeneracion = LocalDate.now();
+		this.pedidos = new ArrayList<Pedido>();
 	}
 
 	public HojaDeRuta(HojaDeRutaEntity h) {

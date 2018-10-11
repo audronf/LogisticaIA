@@ -1,8 +1,10 @@
 package com.ia.dao;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.AnnotationException;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,9 +12,12 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.transform.Transformers;
 
 import com.ia.entities.HojaDeRutaEntity;
+import com.ia.entities.HojaDeRutaPedidoEntity;
 import com.ia.entities.LocalidadEntity;
 import com.ia.hbt.HibernateCore;
 import com.ia.negocio.HojaDeRuta;
+import com.ia.negocio.Localidad;
+import com.ia.negocio.Pedido;
 
 public class HojaDeRutaDAO {
 
@@ -59,12 +64,27 @@ public class HojaDeRutaDAO {
 	}
 	
 	public void saveOrUpdate(HojaDeRuta hdr) {
-		HojaDeRutaEntity h = new HojaDeRutaEntity(new LocalidadEntity(hdr.getLocalidad().getId(), hdr.getLocalidad().getDescripcion()), null, hdr.getFechaGeneracion());
 		SessionFactory sf = HibernateCore.getSessionFactory();
+		HojaDeRutaEntity h = new HojaDeRutaEntity(DireccionDAO.getInstance().getLocalidad(hdr.getLocalidad().getDescripcion())/*, null*/, hdr.getFechaGeneracion());
 		Session session = sf.openSession();
 		session.beginTransaction();
 		session.saveOrUpdate(h);
 		session.getTransaction().commit();
 		session.close();
+		for (Pedido p : hdr.getPedidos()) {
+			HojaDeRutaPedidoEntity hdp = new HojaDeRutaPedidoEntity(h, p.toEntity());
+			Session session2 = sf.openSession();
+			session2.beginTransaction();
+			try {
+				session2.saveOrUpdate(hdp);
+				session2.flush();
+			}catch(Exception e) {
+				session2.flush();
+			}
+			session2.flush();
+			session2.getTransaction().commit();
+			session2.close();
+		}
+
 	}
 }
