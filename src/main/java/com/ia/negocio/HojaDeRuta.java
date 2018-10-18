@@ -21,12 +21,11 @@ public class HojaDeRuta {
 	private LocalDate fechaCierre;
 	private List<Pedido> pedidos;
 	
-	public HojaDeRuta(Localidad localidad/*, Distribuidor distribuidor*/) {
+	public HojaDeRuta(Localidad localidad, Distribuidor distribuidor) {
 		super();
 		this.localidad = localidad;
-//		this.distribuidor = distribuidor;
+		this.distribuidor = distribuidor;
 		this.fechaGeneracion = LocalDate.now();
-		this.pedidos = new ArrayList<Pedido>();
 	}
 
 	public HojaDeRuta(HojaDeRutaEntity h) {
@@ -95,15 +94,19 @@ public class HojaDeRuta {
 	}
 
 	public void asignarDistribuidor(Distribuidor d) {
-		for (Pedido p : pedidos)
-			p.setDistribuidor(d);
+//		for (Pedido p : pedidos)
+//			p.asignarDistribuidor(d);
 		this.distribuidor = d;
-		save();
+		saveDistribuidor();
+		
 	}
 	
 	public void save() {
 		HojaDeRutaDAO.getInstance().saveOrUpdate(this);
 	}
 	
+	public void saveDistribuidor() {
+		HojaDeRutaDAO.getInstance().saveDistribuidor(this);
+	}
 	
 }

@@ -1,10 +1,8 @@
 package com.ia.dao;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.AnnotationException;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -13,13 +11,9 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.transform.Transformers;
 
 import com.ia.entities.HojaDeRutaEntity;
-import com.ia.entities.HojaDeRutaPedidoEntity;
 import com.ia.entities.LocalidadEntity;
-import com.ia.entities.PedidoEntity;
 import com.ia.hbt.HibernateCore;
 import com.ia.negocio.HojaDeRuta;
-import com.ia.negocio.Localidad;
-import com.ia.negocio.Pedido;
 
 public class HojaDeRutaDAO {
 
@@ -47,8 +41,6 @@ public class HojaDeRutaDAO {
 //			      .add(Projections.property("fechaGeneracion"), "fechaGeneracion")
 //			      .add(Projections.property("fechaCierre"), "fechaCierre"))
 //			    .setResultTransformer(Transformers.aliasToBean(HojaDeRutaEntity.class));
-		
-//		hdr = (HojaDeRutaEntity) cr.uniqueResult();
 		session.close();
 		return new HojaDeRuta(hdr);
 	}
@@ -67,46 +59,26 @@ public class HojaDeRutaDAO {
 	}
 	
 	public void saveOrUpdate(HojaDeRuta hdr) {
+		HojaDeRutaEntity h = new HojaDeRutaEntity(new LocalidadEntity(hdr.getLocalidad().getId(), hdr.getLocalidad().getDescripcion()), null, hdr.getFechaGeneracion());
 		SessionFactory sf = HibernateCore.getSessionFactory();
-		HojaDeRutaEntity h = new HojaDeRutaEntity(DireccionDAO.getInstance().getLocalidad(hdr.getLocalidad().getDescripcion())/*, null*/, hdr.getFechaGeneracion());
 		Session session = sf.openSession();
 		session.beginTransaction();
 		session.saveOrUpdate(h);
 		session.getTransaction().commit();
 		session.close();
-		for (Pedido p : hdr.getPedidos()) {
-			HojaDeRutaPedidoEntity hdp = new HojaDeRutaPedidoEntity(h, p.toEntity());
-			Session session2 = sf.openSession();
-			session2.beginTransaction();
-			try {
-				session2.saveOrUpdate(hdp);
-				session2.flush();
-			}catch(Exception e) {
-				continue;
-			}
-			session2.flush();
-			session2.getTransaction().commit();
-			session2.close();
-		}
-
 	}
 
-	public List<Pedido> getPedidos(int codHDR) {
-		List<HojaDeRutaPedidoEntity> hdrp = null;
-		List<PedidoEntity> pe = new ArrayList<PedidoEntity>();
-		List<Pedido> ret = new ArrayList<Pedido>();
+	public void saveDistribuidor(HojaDeRuta hdr) {
 		SessionFactory sf = HibernateCore.getSessionFactory();
 		Session session = sf.openSession();
-		hdrp = (ArrayList<HojaDeRutaPedidoEntity>)session.createQuery("from HojaDeRutaPedidoEntity where codHDR = ?1")
-				.setParameter(1, codHDR)
-				.list();
-		for (HojaDeRutaPedidoEntity hdp: hdrp)
-			for (int i = 0; i<=hdrp.size(); i++) {
-				pe.add(hdp.getPedido());
-			}
-		for (PedidoEntity p : pe)
-			ret.add(new Pedido(p));
-		return ret;
-		
+		session.beginTransaction();
+		@SuppressWarnings("rawtypes")
+		Query query = session.createSQLQuery(
+			    "update HojasDeRuta set dniDistribuidor = ?1" + " where codHDR = ?2");
+			query.setParameter(1, hdr.getDistribuidor().getDni());
+			query.setParameter(2, hdr.getCodHDR());
+			query.executeUpdate();
+		session.getTransaction().commit();
+		session.close();
 	}
 }

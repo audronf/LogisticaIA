@@ -8,11 +8,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "HojasDeRuta_Pedidos",
-uniqueConstraints = {@UniqueConstraint(columnNames = {"codHDR", "codPedido"})}	)
+@Table(name = "HojasDeRuta_Pedidos")
 public class HojaDeRutaPedidoEntity {
 
 	@Id
@@ -28,8 +26,9 @@ public class HojaDeRutaPedidoEntity {
 	public HojaDeRutaPedidoEntity() {
 	}
 
-	public HojaDeRutaPedidoEntity(HojaDeRutaEntity hojaDeRuta, PedidoEntity pedido) {
+	public HojaDeRutaPedidoEntity(Integer id, HojaDeRutaEntity hojaDeRuta, PedidoEntity pedido) {
 		super();
+		this.id = id;
 		this.hojaDeRuta = hojaDeRuta;
 		this.pedido = pedido;
 	}
@@ -56,34 +55,6 @@ public class HojaDeRutaPedidoEntity {
 
 	public void setPedido(PedidoEntity pedido) {
 		this.pedido = pedido;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((hojaDeRuta == null) ? 0 : hojaDeRuta.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((pedido == null) ? 0 : pedido.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		HojaDeRutaPedidoEntity other = (HojaDeRutaPedidoEntity) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		
-		return true;
 	}
 
 }

@@ -3,7 +3,6 @@ package com.ia.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -70,7 +69,7 @@ public class DistribuidorDAO {
 		return ret;
 	}
 
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings("unchecked")
 	public List<Distribuidor> findByLocalidad(String localidad) {
 		List<DistribuidorEntity> distribuidores = new ArrayList<DistribuidorEntity>();
 		List<Distribuidor> ret = new ArrayList<Distribuidor>();
@@ -79,14 +78,6 @@ public class DistribuidorDAO {
 		Session session2 = sf.openSession();
 		LocalidadEntity l = (LocalidadEntity) session.createQuery("from LocalidadEntity where descripcion = ?1")
 				.setParameter(1, localidad).uniqueResult();
-		
-		
-//		@SuppressWarnings("rawtypes")
-//		Query query = session.createSQLQuery(
-//			    "select * from Distribuidores_Localidades where idLocalidad = ?1");
-//			query.setParameter(1, l.getId());
-//		List<DistribuidorLocalidadEntity> dle = query.list();
-		
 		List<DistribuidorLocalidadEntity> dle = (ArrayList<DistribuidorLocalidadEntity>) session
 				.createQuery("from DistribuidorLocalidadEntity where idLocalidad = ?1").setParameter(1, l.getId()).list();
 //		for (DistribuidorLocalidadEntity s : dle) {

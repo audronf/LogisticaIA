@@ -186,5 +186,10 @@ public class Pedido {
 		return pe;
 	}
 
+	public void asignarDistribuidor(Distribuidor d) {
+		this.distribuidor = d;
+		PedidoDAO.getInstance().saveDistribuidor(this);
+	}
+
 	
 }

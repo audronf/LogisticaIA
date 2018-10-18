@@ -18,10 +18,10 @@ public class DistribuidorLocalidadEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@ManyToOne
-	@JoinColumn(name = "dniDistribuidor")
+	@JoinColumn(name = "dniDistribuidor", updatable = false)
 	private DistribuidorEntity distribuidor;
 	@ManyToOne
-	@JoinColumn(name = "idLocalidad")
+	@JoinColumn(name = "idLocalidad", updatable = false)
 	private LocalidadEntity localidad;
 
 	public DistribuidorLocalidadEntity() {

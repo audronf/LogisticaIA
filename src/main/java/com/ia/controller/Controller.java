@@ -2,15 +2,10 @@ package com.ia.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JOptionPane;
-
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import com.ia.dao.ClienteDAO;
 import com.ia.dao.DireccionDAO;
 import com.ia.dao.DistribuidorDAO;
@@ -71,49 +66,32 @@ public class Controller {
 	
 	public void llenarHojaDeRuta(List<Pedido> pedidos){
 		Map<Localidad, List<Pedido>> map = new HashMap<Localidad, List<Pedido>>();
-		Multimap<Localidad, Pedido> multimap = ArrayListMultimap.create();
-//		for (Pedido item : pedidos) {
-//			if (map.containsKey(new Localidad(DireccionDAO.getInstance().getLocalidad(item.getDireccion().getLocalidad().getDescripcion()))))
-//				map.get(new Localidad(DireccionDAO.getInstance().getLocalidad(item.getDireccion().getLocalidad().getDescripcion()))).add(item);
-//			else {
-//				map.put(new Localidad(DireccionDAO.getInstance().getLocalidad(item.getDireccion().getLocalidad().getDescripcion())), new ArrayList<Pedido>());
-//				map.get(new Localidad(DireccionDAO.getInstance().getLocalidad(item.getDireccion().getLocalidad().getDescripcion()))).add(item);
-//			}
-		
-		for (Pedido p : pedidos) {
-			multimap.put(new Localidad(p.getDireccion().getLocalidad().getDescripcion()), p);
-		}
-		
-
-			
-				//		  List<Pedido> list = map.get(new Localidad(DireccionDAO.getInstance().getLocalidad(item.getDireccion().getLocalidad().getDescripcion())));
-//		  if (list == null) {
-//		    list = new ArrayList<Pedido>();
-//		    map.put(new Localidad(DireccionDAO.getInstance().getLocalidad(item.getDireccion().getLocalidad().getDescripcion())), list);
-//		  }
-//		  list.add(item);
-		 /*Todo lo de arriba lo que hace es tomar la lista de pedidos y separarlos por el c�digo de 
+		for (Pedido item : pedidos) {
+		  List<Pedido> list = map.get(item.getDireccion().getLocalidad());
+		  if (list == null) {
+		    list = new ArrayList<Pedido>();
+		    map.put(item.getDireccion().getLocalidad(), list);
+		  }
+		  list.add(item);
+		} /*Todo lo de arriba lo que hace es tomar la lista de pedidos y separarlos por el c�digo de 
 		    localidad. Crea una lista de listas donde cada lista es una lista de los pedidos de una sola
 		    localidad, esta lista se obtiene haciendo map.valules()*/
-		for(Collection<Pedido> lista : multimap.asMap().values())
+		for(List<Pedido> lista : map.values())
 		{
 			asignarHojaDeRuta(lista); //cada lista de pedidos de diferente localidad se va a meter en este m�todo.
 		}
-}
-	
+	}
 
-	private void asignarHojaDeRuta(Collection<Pedido> pedidos) {
-		List<Pedido> lista = new ArrayList<>(pedidos);
+	private void asignarHojaDeRuta(List<Pedido> lista) {
 		if(lista.size()<maxPedidos) //Si tiene menos de 30 pedidos, listo, se crea la hdr y se le asigna esa lista de pedidos
 		{
-			HojaDeRuta hdr = new HojaDeRuta(new Localidad(DireccionDAO.getInstance().getLocalidad(lista.get(0).getDireccion().getLocalidad().getDescripcion())));
-			hdr.setPedidos(lista);
-			for(Pedido p : pedidos)
+			for(Pedido p : lista)
 			{
 				p.setFechaSalida(LocalDate.now());
-				hdr.getPedidos().add(p);
 			}
-			hdr.save();	
+			HojaDeRuta hdr = new HojaDeRuta(lista.get(0).getDireccion().getLocalidad(),null);
+			hdr.setPedidos(lista);
+			hdr.save();
 		}
 		else
 		{
@@ -130,7 +108,7 @@ public class Controller {
 		String estado;
 		Pedido p = PedidoDAO.getInstance().findByCodigo(codPedido);
 		if (p.getFechaIngreso()!=null &&p.getFechaSalida()==null && p.getFechaEntrega()==null) //Todavía no salió
-			estado = "En depósito";
+			estado = "En deposito";
 		else if (p.getFechaIngreso()!=null && p.getFechaSalida()!=null && p.getFechaEntrega()==null) //Todavía no fue entregado
 			estado = "En camino";
 		else if (p.getFechaEntrega()!=null && p.getFechaIngreso()!=null && p.getFechaSalida()!=null)
@@ -142,10 +120,9 @@ public class Controller {
 	
 	public PedidoDTO getPedido(int codPedido) {
 		Pedido p = PedidoDAO.getInstance().findByCodigo(codPedido);
-		if (p!=null) {		
-			p.setDistribuidor(null);
+		p.setDistribuidor(null);
+		if (p!=null)
 			return p.toDTO();
-		}
 		else
 			return null;
 	}
@@ -180,9 +157,9 @@ public class Controller {
 
 	public void asignarHojaDeRuta(int codHDR, String dniDistribuidor) {
 		HojaDeRuta hdr = HojaDeRutaDAO.getInstance().findByCodigo(codHDR);
-		List<Pedido> pedidos = HojaDeRutaDAO.getInstance().getPedidos(codHDR);
-		hdr.setPedidos(pedidos);
 		Distribuidor d = DistribuidorDAO.getInstance().findByDNI(dniDistribuidor);
+		System.out.println(hdr + " " + d);
+		
 		hdr.asignarDistribuidor(d);
 	}
 

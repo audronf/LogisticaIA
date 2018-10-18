@@ -32,10 +32,10 @@ public class PedidoDTO {
 	private String verEstado() {
 		String est;
 		if (this.fechaIngreso!=null && this.fechaSalida==null && this.fechaEntrega==null)
-			est = "En depósito";
-		else if (this.fechaIngreso!=null && this.fechaSalida!=null && this.fechaEntrega==null)
+			est = "En deposito";
+		else if ( this.fechaSalida!=null && this.fechaEntrega==null)
 			est = "En camino";
-		else if (this.fechaIngreso!=null & this.fechaSalida!=null && this.fechaEntrega!=null)
+		else if (this.fechaEntrega!=null)
 			est = "Entregado";
 		else
 			est = "No existe";

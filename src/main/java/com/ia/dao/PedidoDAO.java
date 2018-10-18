@@ -121,4 +121,29 @@ public class PedidoDAO {
 		session.getTransaction().commit();
 		session.close();
 	}
+	
+	public PedidoEntity findUltimo() {
+        Integer pe;
+        SessionFactory sf = HibernateCore.getSessionFactory();
+        Session session = sf.openSession();
+        Query query = session.createQuery("from PedidoEntity order by codPedido DESC");
+        query.setMaxResults(1);
+        PedidoEntity p = (PedidoEntity) query.uniqueResult();
+        session.close();
+        return p;
+    }
+
+	public void saveDistribuidor(Pedido pedido) {
+		SessionFactory sf = HibernateCore.getSessionFactory();
+		Session session = sf.openSession();
+		session.beginTransaction();
+		@SuppressWarnings("rawtypes")
+		Query query = session.createSQLQuery(
+			    "update Pedidos set dniDistribuidor = ?1" + " where codPedido = ?2");
+			query.setParameter(1, pedido.getDistribuidor().getDni());
+			query.setParameter(2, pedido.getCodPedido());
+			query.executeUpdate();
+		session.getTransaction().commit();
+		session.close();
+	}
 }
