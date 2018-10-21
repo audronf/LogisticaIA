@@ -56,6 +56,21 @@ public class PedidoEntity {
 		this.incidencia = incidencia;
 	}
 
+	public PedidoEntity(ClienteEntity cliente, DireccionEntity direccion, boolean fragil, String informacion,
+			LocalDate fechaIngreso, LocalDate fechaSalida, LocalDate fechaEntrega, boolean logistica,
+			String incidencia) {
+		super();
+		this.cliente = cliente;
+		this.direccion = direccion;
+		this.fragil = fragil;
+		this.informacion = informacion;
+		this.fechaIngreso = fechaIngreso;
+		this.fechaSalida = fechaSalida;
+		this.fechaEntrega = fechaEntrega;
+		this.logistica = logistica;
+		this.incidencia = incidencia;
+	}
+
 	public int getCodPedido() {
 		return codPedido;
 	}

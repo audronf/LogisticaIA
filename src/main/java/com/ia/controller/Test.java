@@ -15,7 +15,7 @@ public static void main(String[] args) {
 	Cliente c = new Cliente("1","Claudio Godio","federicofasitella@gmail.com");
 	Localidad l = new Localidad("Belgrano");
     Direccion d = new Direccion("123","123","Buenos aires",l,"Alsina",782,1,"A","asd","1842");
-    Pedido p = new Pedido(c,d,di,false,"cs",false);
+    Pedido p = new Pedido(c,d,false,"cs",false);
     p.save();
     p.setCodPedido(PedidoDAO.getInstance().findUltimo().getCodPedido());
     EmailController.getInstance().enviarCorreoNuevoPedido(p);

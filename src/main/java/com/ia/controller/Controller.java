@@ -52,7 +52,7 @@ public class Controller {
 			d.setGeolocalizado(direccion.isGeolocalizado());
 			d.save();
 		}
-		Pedido p = new Pedido(c, d, null, fragil, informacion, logistica);
+		Pedido p = new Pedido(c, d, fragil, informacion, logistica);
 		p.save();
 		EmailController.getInstance().enviarCorreoNuevoPedido(p);
 			

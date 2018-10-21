@@ -22,11 +22,10 @@ public class Pedido {
 	private boolean logistica;
 	private String incidencia;
 	
-	public Pedido(Cliente cliente, Direccion direccion, Distribuidor distribuidor, boolean fragil, String informacion, boolean logistica) {
+	public Pedido(Cliente cliente, Direccion direccion, boolean fragil, String informacion, boolean logistica) {
 		super();
 		this.cliente = cliente;
 		this.direccion = direccion;
-		this.distribuidor = distribuidor;
 		this.fragil = fragil;
 		this.informacion = informacion;
 		this.fechaIngreso = LocalDate.now();
@@ -38,7 +37,10 @@ public class Pedido {
 		this.codPedido = pe.getCodPedido();
 		this.cliente = new Cliente(pe.getCliente());
 		this.direccion = new Direccion(pe.getDireccion());
-		this.distribuidor = new Distribuidor(pe.getDistribuidor());
+		if(pe.getDistribuidor()==null)
+			this.distribuidor = new Distribuidor("0", "Boca", "0", "0");
+		else
+			this.distribuidor = new Distribuidor(pe.getDistribuidor());
 		this.fragil = pe.isFragil();
 		this.fechaEntrega = pe.getFechaEntrega();
 		this.fechaSalida = pe.getFechaSalida();
