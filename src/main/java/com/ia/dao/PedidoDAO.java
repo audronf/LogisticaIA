@@ -40,7 +40,11 @@ public class PedidoDAO {
 	}
 	
 	public void saveOrUpdate(Pedido p) {
-		PedidoEntity pe = new PedidoEntity(p.getCliente().toEntity(), p.getDireccion().toEntity(), p.getDistribuidor().toEntity(), p.isFragil(), p.getInformacion(), p.getFechaIngreso(), p.getFechaSalida(), p.getFechaEntrega(), p.isLogistica(), p.getIncidencia());
+		PedidoEntity pe = null;
+		if(p.getDistribuidor()!=null)			
+			pe = new PedidoEntity(p.getCliente().toEntity(), p.getDireccion().toEntity(), p.getDistribuidor().toEntity(), p.isFragil(), p.getInformacion(), p.getFechaIngreso(), p.getFechaSalida(), p.getFechaEntrega(), p.isLogistica(), p.getIncidencia());
+		else
+			pe = new PedidoEntity(p.getCliente().toEntity(), p.getDireccion().toEntity(), p.isFragil(), p.getInformacion(), p.getFechaIngreso(), p.getFechaSalida(), p.getFechaEntrega(), p.isLogistica(), p.getIncidencia());
 		SessionFactory sf = HibernateCore.getSessionFactory();
 		Session session = sf.openSession();
 		session.beginTransaction();

@@ -17,8 +17,8 @@ public static void main(String[] args) {
     Direccion d = new Direccion("123","123","Buenos aires",l,"Alsina",782,1,"A","asd","1842");
     Pedido p = new Pedido(c,d,false,"cs",false);
     p.save();
-    p.setCodPedido(PedidoDAO.getInstance().findUltimo().getCodPedido());
-    EmailController.getInstance().enviarCorreoNuevoPedido(p);
+//    p.setCodPedido(PedidoDAO.getInstance().findUltimo().getCodPedido());
+//    EmailController.getInstance().enviarCorreoNuevoPedido(p);
 //    HojaDeRutaDAO.getInstance().saveOrUpdate(new HojaDeRuta(l, di));
     
     
