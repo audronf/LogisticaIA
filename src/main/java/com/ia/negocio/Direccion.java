@@ -150,7 +150,7 @@ public class Direccion {
 	}
 	
 	public DireccionEntity toEntity() {
-		return new DireccionEntity(longitud, latitud, provincia, new LocalidadEntity(localidad.getDescripcion()), calle, numero, piso, unidad, entreCalles, codigoPostal, geolocalizado);
+		return new DireccionEntity(longitud, latitud, provincia, DireccionDAO.getInstance().getLocalidad(localidad.getDescripcion()), calle, numero, piso, unidad, entreCalles, codigoPostal, geolocalizado);
 	}
 
 	public void save() {

@@ -18,7 +18,7 @@ public class DireccionEntity {
 	private String longitud;
 	private String latitud;
 	private String provincia;
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne()
 	@JoinColumn(name="idLocalidad")
 	private LocalidadEntity localidad;
 	private String calle;
