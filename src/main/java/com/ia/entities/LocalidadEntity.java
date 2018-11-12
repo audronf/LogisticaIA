@@ -1,5 +1,7 @@
 package com.ia.entities;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -47,6 +49,18 @@ public class LocalidadEntity {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(descripcion);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		LocalidadEntity other = (LocalidadEntity) obj;
+		return other.getDescripcion().equalsIgnoreCase(this.getDescripcion());
+	}
+	
 	
 	
 }

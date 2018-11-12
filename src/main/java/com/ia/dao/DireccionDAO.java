@@ -61,22 +61,38 @@ public class DireccionDAO {
 
 	public void saveOrUpdate(Direccion d) {
 		DireccionEntity de = d.toEntity();
+		de.setLocalidad(getLocalidad(d.getLocalidad().getDescripcion()));
 		SessionFactory sf = HibernateCore.getSessionFactory();
 		Session session2 = sf.openSession();
 		// Guardo la localidad primero
 		if (!existeLaLocalidad(de.getLocalidad().getDescripcion())) {
 			session2.beginTransaction();
-			session2.saveOrUpdate(de.getLocalidad()); 
+			session2.saveOrUpdate(de);
 			session2.getTransaction().commit();
 			session2.close();
 		}
 		else {
 			de.setLocalidad(getLocalidad(de.getLocalidad().getDescripcion()));
+			session2.beginTransaction();
+			session2.saveOrUpdate(de);
+			session2.getTransaction().commit();
+			session2.close();
 		}
-		Session session = sf.openSession();
-		session.beginTransaction();
-		session.saveOrUpdate(de);
-		session.getTransaction().commit();
-		session.close();
+//		if (!existeLaLocalidad(de.getLocalidad().getDescripcion())) {
+//			session2.beginTransaction();
+//			LocalidadEntity le = new LocalidadEntity(d.getLocalidad().getDescripcion());
+//			de.setLocalidad(le);
+//			session2.saveOrUpdate(le); 
+//			session2.getTransaction().commit();
+//			session2.close();
+//		}
+//		else {
+//			de.setLocalidad(getLocalidad(de.getLocalidad().getDescripcion()));
+//		}
+//		Session session = sf.openSession();
+//		session.beginTransaction();
+//		session.saveOrUpdate(de);
+//		session.getTransaction().commit();
+//		session.close();
 	}
 }
