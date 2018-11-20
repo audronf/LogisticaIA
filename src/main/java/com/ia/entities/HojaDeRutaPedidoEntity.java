@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -20,7 +21,7 @@ public class HojaDeRutaPedidoEntity {
 	@JoinColumn(name = "codHDR")
 	private HojaDeRutaEntity hojaDeRuta;
 	@ManyToOne
-	@JoinColumn(name = "codPedido")
+	@JoinColumn(name = "codPedido", unique = false)
 	private PedidoEntity pedido;
 
 	public HojaDeRutaPedidoEntity() {
@@ -32,6 +33,8 @@ public class HojaDeRutaPedidoEntity {
 		this.hojaDeRuta = hojaDeRuta;
 		this.pedido = pedido;
 	}
+	
+	
 
 	public Integer getId() {
 		return id;

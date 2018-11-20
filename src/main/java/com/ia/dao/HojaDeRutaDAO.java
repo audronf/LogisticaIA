@@ -11,9 +11,11 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.transform.Transformers;
 
 import com.ia.entities.HojaDeRutaEntity;
+import com.ia.entities.HojaDeRutaPedidoEntity;
 import com.ia.entities.LocalidadEntity;
 import com.ia.hbt.HibernateCore;
 import com.ia.negocio.HojaDeRuta;
+import com.ia.negocio.Pedido;
 
 public class HojaDeRutaDAO {
 
@@ -59,13 +61,33 @@ public class HojaDeRutaDAO {
 	}
 	
 	public void saveOrUpdate(HojaDeRuta hdr) {
-		HojaDeRutaEntity h = new HojaDeRutaEntity(new LocalidadEntity(hdr.getLocalidad().getId(), hdr.getLocalidad().getDescripcion()), null, hdr.getFechaGeneracion());
+		HojaDeRutaEntity h = new HojaDeRutaEntity(DireccionDAO.getInstance().getLocalidad(hdr.getLocalidad().getDescripcion()), null, hdr.getFechaGeneracion());
+		List<HojaDeRutaPedidoEntity> pedidos = new ArrayList<HojaDeRutaPedidoEntity>();
+
 		SessionFactory sf = HibernateCore.getSessionFactory();
 		Session session = sf.openSession();
 		session.beginTransaction();
 		session.saveOrUpdate(h);
 		session.getTransaction().commit();
 		session.close();
+
+		for (Pedido p : hdr.getPedidos()) {
+			HojaDeRutaPedidoEntity hdp = new HojaDeRutaPedidoEntity();
+			hdp.setPedido(p.toEntity());
+			hdp.setHojaDeRuta(h/*new HojaDeRutaEntity(DireccionDAO.getInstance().getLocalidad(hdr.getLocalidad().getDescripcion()), null, hdr.getFechaGeneracion())*/);
+			pedidos.add(hdp);
+		}
+		h.setPedidos(pedidos);
+
+		for (HojaDeRutaPedidoEntity hdrpe : pedidos) {
+			Session session2 = sf.openSession();
+			session2.beginTransaction();
+			session2.saveOrUpdate(hdrpe);
+			session2.getTransaction().commit();
+			session2.close();
+		}
+		
+
 	}
 
 	public void saveDistribuidor(HojaDeRuta hdr) {

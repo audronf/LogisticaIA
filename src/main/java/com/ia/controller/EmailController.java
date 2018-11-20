@@ -42,8 +42,8 @@ public class EmailController {
 	        message.setSubject(asunto);
 	        message.setText(
 	        		"<a href=\"http://localhost:8080/Web/ingresoCodigo.html\"><img src=\"http://i64.tinypic.com/qywoyc.png\"></a><br><br>"
-	        		+ "Hola <b>"+p.getCliente().getNombre() + "</b>,<br>El cÛdigo de tu nuevo pedido es: <b>"+ p.getCodPedido()+"</b><br><br>"
-	        				+ "PodÈs usarlo para controlar su estado, ingres·ndolo en <a href=\"http://localhost:8080/Web/ingresoCodigo.html\">Sara S.A.</a>",
+	        		+ "Hola <b>"+p.getCliente().getNombre() + "</b>,<br>El c√≥digo de tu nuevo pedido es: <b>"+ p.getCodPedido()+"</b><br><br>"
+	        				+ "Pod√≥s usarlo para controlar su estado, ingres√°ndolo en <a href=\"http://localhost:8080/Web/ingresoCodigo.html\">Sara S.A.</a>",
 	        		"ISO-8859-1",
 	        		"html");	        Transport transport = session.getTransport("smtp");
 	        transport.connect("smtp.gmail.com", remitente, "ffmm2222");

@@ -2,10 +2,13 @@ package com.ia.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import com.ia.dao.ClienteDAO;
 import com.ia.dao.DireccionDAO;
 import com.ia.dao.DistribuidorDAO;
@@ -65,21 +68,35 @@ public class Controller {
 	}
 	
 	public void llenarHojaDeRuta(List<Pedido> pedidos){
-		Map<Localidad, List<Pedido>> map = new HashMap<Localidad, List<Pedido>>();
-		for (Pedido item : pedidos) {
-		  List<Pedido> list = map.get(item.getDireccion().getLocalidad());
-		  if (list == null) {
-		    list = new ArrayList<Pedido>();
-		    map.put(item.getDireccion().getLocalidad(), list);
-		  }
-		  list.add(item);
-		} /*Todo lo de arriba lo que hace es tomar la lista de pedidos y separarlos por el c�digo de 
+		ListMultimap<String, Pedido> multimap = ArrayListMultimap.create();
+		
+		for (Pedido p : pedidos) {
+			multimap.put(p.getDireccion().getLocalidad().getDescripcion(), p);
+		}
+		
+		for (Collection<Pedido> listaPedidos : multimap.asMap().values()) { // para cada lista de pedidos ordenada por localidad
+			List<Pedido> lista = new ArrayList<Pedido>(listaPedidos);
+			asignarHojaDeRuta(lista);
+			
+		}
+//		Map<Localidad, List<Pedido>> map = new HashMap<Localidad, List<Pedido>>();
+//		for (Pedido item : pedidos) {
+//		  List<Pedido> list = map.get(item.getDireccion().getLocalidad());
+//		  if (list == null) {
+//		    list = new ArrayList<Pedido>();
+//		    map.put(item.getDireccion().getLocalidad(), list);
+//		  }
+//		  list.add(item);
+//		}
+		
+		/*Todo lo de arriba lo que hace es tomar la lista de pedidos y separarlos por el c�digo de 
 		    localidad. Crea una lista de listas donde cada lista es una lista de los pedidos de una sola
 		    localidad, esta lista se obtiene haciendo map.valules()*/
-		for(List<Pedido> lista : map.values())
-		{
-			asignarHojaDeRuta(lista); //cada lista de pedidos de diferente localidad se va a meter en este m�todo.
-		}
+//		for(List<Pedido> lista : map.values())
+//		{
+//			asignarHojaDeRuta(lista); //cada lista de pedidos de diferente localidad se va a meter en este m�todo.
+//		}
+		
 	}
 
 	private void asignarHojaDeRuta(List<Pedido> lista) {

@@ -33,10 +33,10 @@ public class HojaDeRutaEntity {
 	private DistribuidorEntity distribuidor;
 	private LocalDate fechaGeneracion;
 	private LocalDate fechaCierre;
-	@OneToMany(/*fetch = FetchType.EAGER, *//*cascade = CascadeType.ALL)*/)
-	/*@Fetch(value = FetchMode.SUBSELECT)*/
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@JoinTable(name = "HojasDeRuta_Pedidos", joinColumns = {@JoinColumn(name = "codHDR")}, inverseJoinColumns = @JoinColumn(name="codPedido"))
-	private List<PedidoEntity> pedidos;
+	private List<HojaDeRutaPedidoEntity> pedidos;
 	
 	
 	public HojaDeRutaEntity(){}
@@ -47,7 +47,7 @@ public class HojaDeRutaEntity {
 		this.localidad = localidad;
 		this.distribuidor = distribuidor;
 		this.fechaGeneracion = fechaGeneracion;
-		this.pedidos = new ArrayList<PedidoEntity>();
+		this.pedidos = new ArrayList<HojaDeRutaPedidoEntity>();
 	}
 
 	public int getCodHDR() {
@@ -90,11 +90,11 @@ public class HojaDeRutaEntity {
 		this.fechaCierre = fechaCierre;
 	}
 
-	public List<PedidoEntity> getPedidos() {
+	public List<HojaDeRutaPedidoEntity> getPedidos() {
 		return pedidos;
 	}
 
-	public void setPedidos(List<PedidoEntity> pedidos) {
+	public void setPedidos(List<HojaDeRutaPedidoEntity> pedidos) {
 		this.pedidos = pedidos;
 	}
 	

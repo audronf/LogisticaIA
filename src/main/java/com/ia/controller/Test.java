@@ -18,8 +18,8 @@ public static void main(String[] args) {
     Pedido p = new Pedido(c,d,false,"cs",false);
     p.save();
 
-//    p.setCodPedido(PedidoDAO.getInstance().findUltimo().getCodPedido());
-//    EmailController.getInstance().enviarCorreoNuevoPedido(p);
+    p.setCodPedido(PedidoDAO.getInstance().findUltimo().getCodPedido());
+    EmailController.getInstance().enviarCorreoNuevoPedido(p);
 //    HojaDeRutaDAO.getInstance().saveOrUpdate(new HojaDeRuta(l, di));
     
     
