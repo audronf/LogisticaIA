@@ -12,7 +12,7 @@ import com.ia.negocio.Pedido;
 public class Test {
 public static void main(String[] args) {
 	Distribuidor di = new Distribuidor("9", "5", "Rep55", "5");
-	Cliente c = new Cliente("1","Claudio Godio","federicofasitella@gmail.com");
+	Cliente c = new Cliente("7657","Prueba","prueba@gmail.com");
 	Localidad l = new Localidad("Palermo");
     Direccion d = new Direccion("123","123","Buenos aires",l,"Alsina",782,1,"A","asd","1842");
     Pedido p = new Pedido(c,d,false,"cs",false);

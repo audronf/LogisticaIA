@@ -36,7 +36,9 @@ public class Localidad {
 	}
 	
 	public LocalidadDTO toDTO() {
-		return new LocalidadDTO(id, descripcion);
+		LocalidadDTO dto = new LocalidadDTO(descripcion);
+		dto.setId(this.id);
+		return dto;
 	}
 	
 }

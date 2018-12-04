@@ -5,9 +5,8 @@ public class LocalidadDTO {
 	private int id;
 	private String descripcion;
 	
-	public LocalidadDTO(int id, String descripcion) {
+	public LocalidadDTO(String descripcion) {
 		super();
-		this.id = id;
 		this.descripcion = descripcion;
 	}
 

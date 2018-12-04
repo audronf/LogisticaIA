@@ -39,25 +39,22 @@ public class Controller {
 		return instance;
 	}
 
-	public void altaPedido(ClienteDTO cliente, DireccionDTO direccion, DistribuidorDTO distribuidor, boolean fragil, String informacion, boolean logistica) {
+	public void altaPedido(ClienteDTO cliente, DireccionDTO direccion, boolean fragil, String informacion, boolean logistica) {
 		Cliente c = buscarCliente(cliente.getIdentificador());
-		Direccion d = buscarDireccion(direccion.getLatitud(), direccion.getLongitud());
-		
-		Distribuidor dist = buscarDistribuidor(distribuidor.getDni());
+		Direccion d = null;
 		if (c==null) {
 			c = new Cliente(cliente.getIdentificador(), cliente.getNombre(), cliente.getEmail());
 			c.save();
 		}
-		if (d==null) {
+
 			Localidad loc = new Localidad(direccion.getLocalidad().getDescripcion());
 			d = new Direccion(direccion.getLongitud(), direccion.getLatitud(), direccion.getProvincia(), loc, direccion.getCalle(),
 					direccion.getNumero(), direccion.getPiso(), direccion.getUnidad(), direccion.getEntreCalles(), direccion.getCodigoPostal());
 			d.setGeolocalizado(direccion.isGeolocalizado());
-			d.save();
-		}
+
 		Pedido p = new Pedido(c, d, fragil, informacion, logistica);
 		p.save();
-		EmailController.getInstance().enviarCorreoNuevoPedido(p);
+//		EmailController.getInstance().enviarCorreoNuevoPedido(p);
 			
 	}
 	
